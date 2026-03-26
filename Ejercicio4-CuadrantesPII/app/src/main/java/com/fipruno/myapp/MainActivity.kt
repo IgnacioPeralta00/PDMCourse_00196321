@@ -6,10 +6,10 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             MyAppTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                        Quadrants(
+                    Quadrants(
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -42,8 +42,8 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun     Quadrants(modifier: Modifier = Modifier) {
-    Column(modifier = Modifier.fillMaxSize()) {
+fun Quadrants(modifier: Modifier = Modifier) {
+    Column(modifier = modifier.fillMaxWidth()) {
         Row(modifier = Modifier.weight(1f)) {
             QuadrantCard(
                 title = stringResource(R.string.text_composable_title),
@@ -57,15 +57,13 @@ fun     Quadrants(modifier: Modifier = Modifier) {
                 backgroundColor = colorResource(R.color.color2),
                 modifier = Modifier.weight(1f)
             )
-
-                    }
+        }
         Row(modifier = Modifier.weight(1f)) {
             QuadrantCard(
                 title = stringResource(R.string.row_composable_title),
                 description = stringResource(R.string.row_composable_desc),
                 backgroundColor = colorResource(R.color.color3),
                 modifier = Modifier.weight(1f)
-
             )
             QuadrantCard(
                 title = stringResource(R.string.column_composable_title),
@@ -74,8 +72,6 @@ fun     Quadrants(modifier: Modifier = Modifier) {
                 modifier = Modifier.weight(1f)
             )
         }
-
-
     }
 }
 
@@ -97,11 +93,12 @@ fun QuadrantCard(
         Text(
             text = title,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 13.dp)
+            modifier = Modifier.padding(bottom = 16.dp)
         )
         Text(
             text = description,
-            textAlign = TextAlign.Justify
+            textAlign = TextAlign.Justify,
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }
