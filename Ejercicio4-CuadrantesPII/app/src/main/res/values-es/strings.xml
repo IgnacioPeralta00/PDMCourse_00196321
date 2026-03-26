@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MyApp</string>
+    <string name="text_composable_title">Composable de texto</string>
+    <string name="text_composable_desc">Muestra texto y sigue las pautas recomendadas de Material Design.</string>
+    <string name="image_composable_title">Composable de imagen</string>
+    <string name="image_composable_desc">Crea un composable que organiza y dibuja un objeto de clase Painter determinado.</string>
+    <string name="row_composable_title">Composable de fila</string>
+    <string name="row_composable_desc">Un composable de diseño que coloca a sus hijos en una secuencia horizontal.</string>
+    <string name="column_composable_title">Composable de columna</string>
+    <string name="column_composable_desc">Un composable de diseño que coloca a sus hijos en una secuencia vertical.</string>
+</resources>
