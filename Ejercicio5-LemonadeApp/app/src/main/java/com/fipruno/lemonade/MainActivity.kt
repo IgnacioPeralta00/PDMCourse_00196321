@@ -17,8 +17,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,12 +41,27 @@ import androidx.compose.ui.unit.sp
 import com.fipruno.lemonade.ui.theme.LemonadeTheme
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             LemonadeTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                Scaffold(modifier = Modifier.fillMaxSize(),
+                    topBar = {
+                        CenterAlignedTopAppBar(
+                            title = {
+                                Text(
+                                    text = stringResource(R.string.app_name),
+                                    fontWeight = FontWeight.Bold
+                                )
+                            },
+                            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                                containerColor = colorResource(R.color.yellow_sunflower)
+                            )
+                        )
+                    }
+                ) { innerPadding ->
                     LemonadeApp(
                         modifier = Modifier.padding(innerPadding)
                     )
@@ -84,27 +102,15 @@ fun LemonadeApp(modifier: Modifier = Modifier) {
     }
 
 
-    Column(modifier.fillMaxSize().background(Color.White),
+    Column(modifier
+        .fillMaxSize()
+        .background(Color.White),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center)
     {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(colorResource(R.color.yellow_sunflower))
-                .weight(0.1f)
-                .padding(16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = stringResource(R.string.app_name),
-                fontWeight = FontWeight.Bold,
-                fontSize = 18.sp,
-                color = Color.Black
-            )
-        }
         Column(
-            modifier = Modifier.weight(1f)
+            modifier = Modifier
+                .weight(1f)
                 .fillMaxWidth()
                 .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
