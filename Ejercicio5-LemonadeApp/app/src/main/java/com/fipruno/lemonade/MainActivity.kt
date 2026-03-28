@@ -7,15 +7,12 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -77,7 +74,7 @@ fun LemonadeApp(modifier: Modifier = Modifier) {
     var tapsOnButton by remember {mutableStateOf(0)}
     var randomInt by remember { mutableStateOf((2..4).random()) }
 
-    if (tapsOnButton >= 3 + randomInt ) {
+    if (tapsOnButton >= 3 + randomInt ) { // Fin/inicio de un nuevo ciclo
       tapsOnButton = 0;
       randomInt = (2..4).random();
     }
