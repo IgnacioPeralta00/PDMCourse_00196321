@@ -21,9 +21,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,6 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.fipruno.lemonade.ui.theme.LemonadeTheme
 
 class MainActivity : ComponentActivity() {
@@ -69,42 +67,18 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun LemonadeProcess(modifier: Modifier) {
-    var tapsOnButton by remember {mutableStateOf(0)}
-    var randomSqueezes by remember { mutableStateOf((2..4).random()) }
-
-    var initialState = LemonadeState()      // valores por defecto 0,0
-    var tapsToRestart = 3 + randomSqueezes
-    var tapsToDrink = 1 + randomSqueezes
-
-    if (tapsOnButton >= tapsToRestart ) {   // Fin/inicio de un nuevo ciclo
-        tapsOnButton = 0
-        randomSqueezes = (2..4).random()
-    }
-
-    initialState.imageResource = when (tapsOnButton) {
-        0 -> R.drawable.lemon_tree
-        in 1 until tapsToDrink -> R.drawable.lemon_squeeze
-        tapsToDrink -> R.drawable.lemon_drink
-        tapsToDrink + 1 -> R.drawable.lemon_restart
-        else -> {
-            R.drawable.lemon_squeeze
-        }
-    }
-    initialState.stringResource = when (tapsOnButton) {
-        0 -> R.string.lemon_tap
-        in 1 until tapsToDrink -> R.string.lemon_squeeze
-        tapsToDrink -> R.string.lemon_drink
-        tapsToDrink + 1 -> R.string.lemon_restart
-        else -> {
-            R.string.lemon_squeeze
-        }
-    }
-
+fun LemonadeProcess(
+    modifier: Modifier,
+    lemonadeViewModel: LemonadeViewModel = viewModel()
+) {
+    val uiState by lemonadeViewModel.uiState
     LemonadeApp(
-        state = initialState,
+        state = LemonadeState(
+            imageResource = uiState.imageResource,
+            stringResource = uiState.stringResource,
+        ),
         onImageClick = {
-            tapsOnButton++
+            lemonadeViewModel.imageClick()
         },
         modifier = modifier
     )
