@@ -59,7 +59,7 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                 ) { innerPadding ->
-                    LemonadeApp(
+                    LemonadeProcess(
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -69,35 +69,54 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun LemonadeApp(modifier: Modifier = Modifier) {
-
+fun LemonadeProcess(modifier: Modifier) {
     var tapsOnButton by remember {mutableStateOf(0)}
-    var randomInt by remember { mutableStateOf((2..4).random()) }
+    var randomSqueezes by remember { mutableStateOf((2..4).random()) }
 
-    if (tapsOnButton >= 3 + randomInt ) { // Fin/inicio de un nuevo ciclo
-      tapsOnButton = 0;
-      randomInt = (2..4).random();
+    var initialState = LemonadeState()
+    var tapsToRestart = 3 + randomSqueezes
+    var tapsToDrink = 1 + randomSqueezes
+
+    if (tapsOnButton >= tapsToRestart ) { // Fin/inicio de un nuevo ciclo
+        tapsOnButton = 0
+        randomSqueezes = (2..4).random()
     }
 
-    var imageResource = when (tapsOnButton) {
+    initialState.imageResource = when (tapsOnButton) {
         0 -> R.drawable.lemon_tree
         1 -> R.drawable.lemon_squeeze
-        2 -> R.drawable.lemon_drink
-        2 + randomInt -> R.drawable.lemon_restart
+        tapsToDrink -> R.drawable.lemon_drink
+        tapsToDrink + 1 -> R.drawable.lemon_restart
         else -> {
-            R.drawable.lemon_drink
+            R.drawable.lemon_squeeze
         }
     }
-    var stringResource = when (tapsOnButton) {
+    initialState.stringResource = when (tapsOnButton) {
         0 -> R.string.lemon_tap
         1 -> R.string.lemon_squeeze
-        2 -> R.string.lemon_drink
-        2 + randomInt -> R.string.lemon_restart
+        tapsToDrink -> R.string.lemon_drink
+        tapsToDrink + 1 -> R.string.lemon_restart
         else -> {
-            R.string.lemon_drink
+            R.string.lemon_squeeze
         }
     }
 
+    LemonadeApp(
+        state = initialState,
+        onImageClick = {
+            tapsOnButton++
+        },
+        modifier = modifier
+    )
+}
+
+
+@Composable
+fun LemonadeApp(
+    modifier: Modifier = Modifier,
+    state: LemonadeState,
+    onImageClick: () -> Unit = {}
+) {
 
     Column(modifier
         .fillMaxSize()
@@ -113,12 +132,12 @@ fun LemonadeApp(modifier: Modifier = Modifier) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center) {
             Button(
-                onClick = { tapsOnButton++ },
+                onClick = onImageClick,
                 shape = RoundedCornerShape(25),
                 colors = ButtonDefaults.buttonColors(colorResource(R.color.mint_pastel))
                 ) {
                 Image(
-                    painter = painterResource(imageResource),
+                    painter = painterResource(state.imageResource),
                     contentDescription = stringResource(R.string.lemon_tree_content_description),
                     modifier = Modifier
                         .padding(16.dp)
@@ -126,7 +145,7 @@ fun LemonadeApp(modifier: Modifier = Modifier) {
                 )
             }
             Text(
-                text = stringResource(stringResource),
+                text = stringResource(state.stringResource),
                 fontSize = 18.sp,
                 color = Color.Black,
                 textAlign = TextAlign.Center,
@@ -141,6 +160,6 @@ fun LemonadeApp(modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     LemonadeTheme {
-        LemonadeApp()
+        LemonadeProcess(modifier = Modifier)
     }
 }

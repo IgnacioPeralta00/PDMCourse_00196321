@@ -1,17 +1,3 @@
 package com.fipruno.lemonade
 
-class LemonadeState(var imageResource: Int, var stringResource: Int) {
-    // metodos set y get
-    fun setImageResource(imageResource: Int) {
-        this.imageResource = imageResource
-    }
-    fun getImageResource(): Int {
-        return imageResource
-    }
-    fun setStringResource(stringResource: Int) {
-        this.stringResource = stringResource
-    }
-    fun getStringResource(): Int {
-        return stringResource
-    }
-}
+class LemonadeState(var imageResource: Int = 0, var stringResource: Int = 0, var imageDescription: Int = 0)
