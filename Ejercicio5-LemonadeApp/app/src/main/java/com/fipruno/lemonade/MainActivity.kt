@@ -73,18 +73,18 @@ fun LemonadeProcess(modifier: Modifier) {
     var tapsOnButton by remember {mutableStateOf(0)}
     var randomSqueezes by remember { mutableStateOf((2..4).random()) }
 
-    var initialState = LemonadeState()
+    var initialState = LemonadeState()      // valores por defecto 0,0
     var tapsToRestart = 3 + randomSqueezes
     var tapsToDrink = 1 + randomSqueezes
 
-    if (tapsOnButton >= tapsToRestart ) { // Fin/inicio de un nuevo ciclo
+    if (tapsOnButton >= tapsToRestart ) {   // Fin/inicio de un nuevo ciclo
         tapsOnButton = 0
         randomSqueezes = (2..4).random()
     }
 
     initialState.imageResource = when (tapsOnButton) {
         0 -> R.drawable.lemon_tree
-        1 -> R.drawable.lemon_squeeze
+        in 1 until tapsToDrink -> R.drawable.lemon_squeeze
         tapsToDrink -> R.drawable.lemon_drink
         tapsToDrink + 1 -> R.drawable.lemon_restart
         else -> {
@@ -93,7 +93,7 @@ fun LemonadeProcess(modifier: Modifier) {
     }
     initialState.stringResource = when (tapsOnButton) {
         0 -> R.string.lemon_tap
-        1 -> R.string.lemon_squeeze
+        in 1 until tapsToDrink -> R.string.lemon_squeeze
         tapsToDrink -> R.string.lemon_drink
         tapsToDrink + 1 -> R.string.lemon_restart
         else -> {
@@ -158,7 +158,7 @@ fun LemonadeApp(
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun LemonadePreview() {
     LemonadeTheme {
         LemonadeProcess(modifier = Modifier)
     }
