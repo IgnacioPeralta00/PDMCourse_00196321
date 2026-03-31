@@ -73,7 +73,7 @@ fun LemonadeProcess(
 ) {
     val uiState by lemonadeViewModel.uiState
     LemonadeApp(
-        state = LemonadeState(
+        state = LemonadeUiState(
             imageResource = uiState.imageResource,
             stringResource = uiState.stringResource,
         ),
@@ -88,7 +88,7 @@ fun LemonadeProcess(
 @Composable
 fun LemonadeApp(
     modifier: Modifier = Modifier,
-    state: LemonadeState,
+    state: LemonadeUiState,
     onImageClick: () -> Unit = {}
 ) {
 

@@ -1,5 +1,6 @@
 package com.fipruno.lemonade
 
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.State
 import androidx.lifecycle.ViewModel
@@ -12,7 +13,7 @@ data class LemonadeUiState(
 
 class LemonadeViewModel : ViewModel() {
 
-    private val _uiState = mutableStateOf(LemonadeUiState())
+    private val _uiState: MutableState<LemonadeUiState> = mutableStateOf(LemonadeUiState())
     val uiState: State<LemonadeUiState> = _uiState
 
     private var randomSqueezes = (2..4).random()
