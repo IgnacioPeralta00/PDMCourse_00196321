@@ -73,10 +73,7 @@ fun LemonadeProcess(
 ) {
     val uiState by lemonadeViewModel.uiState
     LemonadeApp(
-        state = LemonadeUiState(
-            imageResource = uiState.imageResource,
-            stringResource = uiState.stringResource,
-        ),
+        state = uiState,
         onImageClick = {
             lemonadeViewModel.imageClick()
         },
