@@ -20,13 +20,10 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -66,18 +63,10 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun DiceRollerApp(modifier: Modifier = Modifier) {
-    DiceButtonAndImage(
-        modifier = modifier)
-}
 
-@Composable
-fun DiceButtonAndImage(
-    modifier: Modifier = Modifier
-) {
+    var diceValue by rememberSaveable { mutableIntStateOf(1) }
 
-    var diceResult by rememberSaveable { mutableIntStateOf(1) }
-
-    var imageResource = when (diceResult) {
+    val imageResource = when (diceValue) {
         1 -> R.drawable.dice_1
         2 -> R.drawable.dice_2
         3 -> R.drawable.dice_3
@@ -85,7 +74,7 @@ fun DiceButtonAndImage(
         5 -> R.drawable.dice_5
         else -> R.drawable.dice_6
     }
-    var contentDescription = when (diceResult) {
+    val contentDescription = when (diceValue) {
         1 -> R.string.dice_1
         2 -> R.string.dice_2
         3 -> R.string.dice_3
@@ -95,6 +84,23 @@ fun DiceButtonAndImage(
     }
 
 
+
+    DiceButtonAndImage(
+        modifier = modifier,
+        imageResource = imageResource,
+        contentDescription = contentDescription,
+        onButtonClick = { diceValue = (1..6).random() }
+    )
+}
+
+@Composable
+fun DiceButtonAndImage(
+    modifier: Modifier = Modifier,
+    imageResource: Int,
+    contentDescription: Int,
+    onButtonClick: () -> Unit
+) {
+
     Column(modifier = modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center) {
@@ -103,15 +109,13 @@ fun DiceButtonAndImage(
             contentDescription = stringResource(contentDescription)
         )
         Button(
-            onClick = {diceResult = (1..6).random()},
+            onClick = onButtonClick,
             shape = RoundedCornerShape(20),
             colors = ButtonDefaults.buttonColors(colorResource(R.color.purple_700))
         ) {
             Text(text = stringResource(R.string.roll))
         }
-        Text(
-            text = diceResult.toString()
-        )
+
     }
 }
 
