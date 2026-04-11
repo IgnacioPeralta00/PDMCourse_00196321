@@ -29,8 +29,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
@@ -80,73 +78,88 @@ class MainActivity : ComponentActivity() {
 fun TipCalculator(modifier: Modifier = Modifier) {
     var amountInput by rememberSaveable { mutableStateOf("") }
     var tipInput by rememberSaveable { mutableStateOf("") }
-    var tip by rememberSaveable { mutableStateOf("0.0") }
-    val amount = amountInput.toDoubleOrNull() ?: 0.0
-    val tipPercent = tipInput.toDoubleOrNull() ?: 0.0
+    var tip by rememberSaveable { mutableStateOf("") }
 
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(17.dp)
-                .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(24.dp),
+    TipCalculatorContent(
+        modifier = modifier,
+        amountInput = amountInput,
+        tipInput = tipInput,
+        tip = tip,
+        onAmountChange = { amountInput = it },
+        onTipPercentChange = { tipInput = it },
+        onCalculate = {
+            val amount = amountInput.toDoubleOrNull() ?: 0.0
+            val tipPercent = tipInput.toDoubleOrNull() ?: 0.0
+            tip = calculateTip(amount, tipPercent) }
+    )
+}
 
-            ) {
-            TextField(
-                value = amountInput,
-                onValueChange = { amountInput = it },
-                label = { Text("Bill Amount") },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true,
-                leadingIcon = { Text(text = "$") },
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Next
-                )
+@Composable
+fun TipCalculatorContent(
+    modifier: Modifier = Modifier,
+    amountInput: String,
+    tipInput: String,
+    tip: String,
+    onAmountChange: (String) -> Unit,
+    onTipPercentChange: (String) -> Unit,
+    onCalculate: () -> Unit
+){
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(17.dp)
+            .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(24.dp),
+
+        ) {
+        TextField(
+            value = amountInput,
+            onValueChange = onAmountChange,
+            label = { Text("Bill Amount") },
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true,
+            leadingIcon = { Text(text = "$") },
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Next
             )
+        )
 
-            TextField(
-                value = tipInput,
-                onValueChange = { tipInput = it },
-                label = { Text("Tip Percentage") },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true,
-                leadingIcon = { Text(text = "%") },
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Done
-                )
+        TextField(
+            value = tipInput,
+            onValueChange = onTipPercentChange,
+            label = { Text("Tip Percentage") },
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true,
+            leadingIcon = { Text(text = "%") },
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Done
             )
+        )
 
-            Button(
-                onClick = {
-                    if (amountInput.isNotBlank() && tipInput.isNotBlank()) {
-                        tip = calculateTip(amount, tipPercent)
-                    }
-                },
-                modifier = Modifier
-            ) {
-                Text(text = "Calculate")
-            }
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(
-                        color = colorResource(R.color.pale_lavender_light),
-                        shape = RoundedCornerShape(12.dp))
-                    .padding(16.dp)
-                    .align(Alignment.Start),
-            ) {
-                Text(
-                    text = "Tip Amount: $tip",
-                    fontStyle = FontStyle.Italic
-                )
-            }
+        Button(
+            onClick = onCalculate,
+            modifier = Modifier
+        ) {
+            Text(text = "Calculate")
         }
-
-
-
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = colorResource(R.color.pale_lavender_light),
+                    shape = RoundedCornerShape(12.dp))
+                .padding(16.dp)
+                .align(Alignment.Start),
+        ) {
+            Text(
+                text = "Tip Amount: $tip",
+                fontStyle = FontStyle.Italic
+            )
+        }
+    }
 }
 
 internal fun calculateTip(amount: Double, tipPercent: Double = 15.0) : String {
