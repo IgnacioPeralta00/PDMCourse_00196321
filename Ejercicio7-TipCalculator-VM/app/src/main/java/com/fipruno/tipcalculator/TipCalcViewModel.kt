@@ -17,40 +17,26 @@ class TipCalcViewModel(): ViewModel() {
 
     private val _uiState: MutableState<TipCalcUiState> = mutableStateOf(TipCalcUiState())
     val uiState: State<TipCalcUiState> = _uiState
-
-    var tipInput = ""
-    var billInput = ""
-    var tip = ""
-
     fun onTipInputChanged(newInput: String) {
-        tipInput = newInput
         _uiState.value = _uiState.value.copy(
-            tipPercentage = tipInput
+            tipPercentage = newInput
         )
     }
 
     fun onBillInputChanged(newInput: String) {
-        billInput = newInput
         _uiState.value = _uiState.value.copy(
-            billAmount = billInput
+            billAmount = newInput
         )
     }
 
 
-    fun calculateTip(): String {
-        val billAmount = billInput.toDoubleOrNull() ?: 0.0
-        val tipPercent = tipInput.toDoubleOrNull() ?: 0.0
-        val doubleTip = tipPercent / 100 * billAmount
-        tip = NumberFormat.getCurrencyInstance().format(doubleTip)
-        return tip
-    }
-
     fun onCalculateTip() {
-        val tip = calculateTip()
+        val bill = _uiState.value.billAmount.toDoubleOrNull() ?: 0.0
+        val tipPercent = _uiState.value.tipPercentage.toDoubleOrNull() ?: 0.0
+        val calculatedTip = if (bill > 0) (bill * (tipPercent / 100)) else 0.0
+
         _uiState.value = _uiState.value.copy(
-            tip = tip,
-            billAmount = billInput,
-            tipPercentage = tipInput
+            tip = NumberFormat.getCurrencyInstance().format(calculatedTip)
         )
 
     }
