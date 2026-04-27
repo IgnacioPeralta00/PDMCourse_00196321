@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.pdm.fipr.studentprofile.screens.StudentListScreen
 import com.pdm.fipr.studentprofile.ui.theme.StudentProfileTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,12 +20,10 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             StudentProfileTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                StudentListScreen(
+                    modifier = Modifier,
+                    onStudentClick = { }
+                )
             }
         }
     }
