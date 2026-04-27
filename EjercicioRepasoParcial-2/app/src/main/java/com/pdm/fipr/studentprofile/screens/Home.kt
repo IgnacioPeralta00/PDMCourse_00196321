@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -28,23 +29,27 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import com.pdm.fipr.studentprofile.model.Student
 import com.pdm.fipr.studentprofile.screens.components.AppScaffold
 
 @Composable
 fun StudentListScreen(
     modifier: Modifier = Modifier,
-    onStudentClick: () -> Unit
+    studentsList: List<Student>,
+    onAddStudent: (id: Int, name: String) -> Unit,
+    onStudentClick: (Int) -> Unit
 ) {
 
 
     var studentId by remember { mutableIntStateOf(0) }                       // Guarda el ID del estudiante
-    val studentsList = remember { mutableStateListOf<Student>() }                   // Lista de estuadiantes
     var studentName by remember(studentId) { mutableStateOf("") }    // Guarda el nombre del estudiante
-
 
 
     AppScaffold(
@@ -75,7 +80,8 @@ fun StudentListScreen(
             Button(
                 onClick = {
                     if(studentName.isNotEmpty()) {
-                        studentsList.add(Student(studentId, studentName))
+                        onAddStudent(studentId, studentName)
+                        //studentsList.add(Student(studentId, studentName))
                         studentId++
                     }
                 },
@@ -116,7 +122,7 @@ fun StudentListScreen(
                 itemsIndexed(studentsList) { index, student ->
                     Row(
                         modifier = Modifier
-                            .clickable { onStudentClick() }
+                            .clickable { onStudentClick(student.id) }
                             .fillMaxWidth()
                             .padding(vertical = 8.dp, horizontal = 16.dp),
                         verticalAlignment = Alignment.CenterVertically,
@@ -144,9 +150,52 @@ fun StudentListScreen(
             }
         }
     }
-
 }
 
+
+
+@Composable
+fun StudentImage(
+    modifier: Modifier,
+    studentId: Int,
+    onBackHome: () -> Unit
+) {
+    AppScaffold(
+        modifier = modifier,
+        title = "Imagen"
+    ) { innerPadding ->
+        Column(
+            modifier = modifier
+                .padding(innerPadding)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+
+            AsyncImage(
+                model = "https://image.tmdb.org/t/p/w500/79EVB4qhyfrdlMgT8GIRAikdzsQ.jpg",
+                contentDescription = "Imagen de prueba",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(220.dp)
+                    .clip(RoundedCornerShape(8.dp)),
+                contentScale = ContentScale.Crop
+            )
+
+            Button(
+                modifier = Modifier,
+                onClick = onBackHome
+            ) {
+                Text(
+                    text = "Regresar",
+                    fontStyle = FontStyle.Italic
+                )
+            }
+        }
+    }
+}
+
+/*
 @Preview(showBackground = true)
 @Composable
 fun StudentListScreenPreview() {
@@ -155,3 +204,4 @@ fun StudentListScreenPreview() {
         onStudentClick = { }
     )
 }
+*/
