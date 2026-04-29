@@ -75,7 +75,7 @@ fun ProductMenu(
                                 .fillMaxWidth()
                                 .clickable { onProductClick(product) },
                             elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                            shape = RoundedCornerShape(12.dp)
+                            shape = RoundedCornerShape(16.dp)
                         ) {
                             Row(
                                 modifier = Modifier
@@ -84,7 +84,7 @@ fun ProductMenu(
                             ) {
                                 AsyncImage(
                                     model = product.imagenUrl,
-                                    contentDescription = "Imagen de producto",
+                                    contentDescription = null,
                                     modifier = Modifier
                                         .size(120.dp)
                                         .clip(RoundedCornerShape(8.dp))

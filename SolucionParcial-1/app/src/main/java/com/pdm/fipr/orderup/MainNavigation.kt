@@ -22,7 +22,6 @@ fun MainNavigator(modifier: Modifier = Modifier) {
     fun onProductClick(product: Product) {
 
         val productFound = productsOrder.find { it.id == product.id }
-
         if (productFound !== null) {
             val productIndex = productsOrder.indexOf(productFound)
             productsOrder[productIndex] = productFound.copy(cantidad = productFound.cantidad + 1)
@@ -32,7 +31,6 @@ fun MainNavigator(modifier: Modifier = Modifier) {
     }
 
     fun onRowClick(product: Product) {
-        //val productFound = productsOrder.find { it.id == product.id }
         val productIndex = productsOrder.indexOf(product)
         productsOrder.removeAt(productIndex)
     }
@@ -53,11 +51,10 @@ fun MainNavigator(modifier: Modifier = Modifier) {
             entry<Routes.Order> { list ->
                 OrderResult(
                     modifier = Modifier,
-                    list.list,
+                    productsOrder = list.list,
                     onBack = { backStack.removeLastOrNull() },
                     onRowClick = { product -> onRowClick(product) },
-                    onOrderConfirm = { productsOrder.clear()
-                                        backStack.removeLastOrNull() }
+                    onOrderConfirm = { productsOrder.clear() }
                 )
             }
         }
