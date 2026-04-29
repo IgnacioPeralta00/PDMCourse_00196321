@@ -1,7 +1,9 @@
 package com.pdm.fipr.orderup.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -25,7 +28,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.pdm.fipr.orderup.dummy.menu
@@ -35,7 +42,7 @@ import com.pdm.fipr.orderup.screens.components.AppScaffold
 @Composable
 fun ProductMenu(
     modifier: Modifier,
-    carrito: List<Product>,
+    productsOrder: List<Product>,
     onProductClick: (product: Product) -> Unit,
     onCheckOrder: () -> Unit
 ) {
@@ -85,7 +92,8 @@ fun ProductMenu(
                             ) {
                                 Text(
                                     text = product.nombre,
-                                    style = MaterialTheme.typography.bodyMedium,
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    textAlign = TextAlign.Start,
                                     modifier = Modifier
                                         .padding(bottom = 8.dp)
                                         .fillMaxWidth()
@@ -96,21 +104,31 @@ fun ProductMenu(
                                 Text(
                                     text = "$${product.precio} c/u",
                                     style = MaterialTheme.typography.bodyMedium,
+                                    textAlign = TextAlign.Start,
+                                    fontWeight = FontWeight.SemiBold,
                                     modifier = Modifier
                                         .padding(bottom = 8.dp)
                                         .fillMaxWidth()
                                 )
-                                Text(
-                                    text = "Cantidad: ${product.cantidad}",
-                                    style = MaterialTheme.typography.bodyMedium,
+                                Box(
                                     modifier = Modifier
-                                        .padding(bottom = 8.dp)
-                                        .fillMaxWidth()
-                                )
+                                        .size(26.dp)
+                                        .background(
+                                            color = MaterialTheme.colorScheme.secondary,
+                                            shape = CircleShape
+                                        ),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(
+                                        text = "${productsOrder.find { it.id == product.id }?.cantidad ?: 0}",
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = Color.White
+                                    )
+                                }
                             }
                         }
                     }
-                    Spacer(modifier.height(8.dp))
+                    Spacer(modifier.height(16.dp))
                 }
 
                 item {
