@@ -55,7 +55,9 @@ fun MainNavigator(modifier: Modifier = Modifier) {
                     modifier = Modifier,
                     list.list,
                     onBack = { backStack.removeLastOrNull() },
-                    onRowClick = { product -> onRowClick(product) }
+                    onRowClick = { product -> onRowClick(product) },
+                    onOrderConfirm = { productsOrder.clear()
+                                        backStack.removeLastOrNull() }
                 )
             }
         }

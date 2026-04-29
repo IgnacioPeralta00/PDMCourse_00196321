@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,7 +33,8 @@ fun OrderResult(
     modifier : Modifier,
     productsOrder: List<Product>,
     onBack: () -> Unit,
-    onRowClick: (product: Product) -> Unit
+    onRowClick: (product: Product) -> Unit,
+    onOrderConfirm: () -> Unit
 ) {
 
     AppScaffold(
@@ -40,7 +42,8 @@ fun OrderResult(
         title = "Orden"
     ) { innerPadding ->
         Spacer(modifier = Modifier.height(8.dp))
-        LazyColumn(
+
+        Column(
             modifier = modifier
                 .fillMaxSize()
                 .padding(innerPadding)
@@ -48,105 +51,124 @@ fun OrderResult(
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            item {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-                    Text(
-                        text = "Para eliminar un producto, presione la fila correspondiente",
+            LazyColumn(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .weight(1f),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                item {
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        Text(
+                            text = "Para eliminar un producto, presione la fila correspondiente",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp),
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight.SemiBold,
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                    }
+                }
+
+                item {
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.SemiBold,
-                        style = MaterialTheme.typography.titleMedium
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "Producto",
+                            modifier = Modifier
+                                .weight(3f),
+                            fontWeight = FontWeight.Bold)
+                        Text(text = "Precio",
+                            modifier = Modifier
+                                .weight(1.5f),
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.End)
+                        Text(text = "Cant.",
+                            modifier = Modifier
+                                .weight(1.5f),
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.End)
+                        Text(
+                            text = "Total",
+                            modifier = Modifier
+                                .weight(2f),
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.End)
+                    }
+                    HorizontalDivider()
+                }
+                items(productsOrder) { product ->
+                    Row(
+                        modifier = Modifier
+                            .clickable { onRowClick(product) }
+                            .fillMaxWidth()
+                            .padding(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = product.nombre,
+                            modifier = Modifier
+                                .weight(3f)
+                                .background(
+                                    color = androidx.compose.ui.graphics.Color.Transparent
+                                ))
+                        Text(
+                            text = "$${String.format("%.2f", product.precio)}",
+                            modifier = Modifier
+                                .weight(1.5f),
+                            textAlign = TextAlign.End)
+                        Text(
+                            text = "${product.cantidad}",
+                            modifier = Modifier
+                                .weight(1.5f),
+                            textAlign = TextAlign.End)
+                        Text(
+                            text = "$${String.format("%.2f", product.precio * product.cantidad)}",
+                            modifier = Modifier
+                                .weight(2f),
+                            textAlign = TextAlign.End)
+
+                    }
+                }
+                item {
+                    HorizontalDivider()
+                    Text(
+                        text = "$${String.format("%.2f", productsOrder.sumOf { it.precio * it.cantidad })}",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp),
+                        textAlign = TextAlign.End
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
                 }
             }
-
-            item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "Producto",
-                        modifier = Modifier
-                            .weight(3f),
-                        fontWeight = FontWeight.Bold)
-                    Text(text = "Precio",
-                        modifier = Modifier
-                            .weight(1.5f),
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.End)
-                    Text(text = "Cant.",
-                        modifier = Modifier
-                            .weight(1.5f),
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.End)
-                    Text(
-                        text = "Total",
-                        modifier = Modifier
-                            .weight(2f),
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.End)
-                }
-                HorizontalDivider()
-            }
-            items(productsOrder) { product ->
-                Row(
-                    modifier = Modifier
-                        .clickable { onRowClick(product) }
-                        .fillMaxWidth()
-                        .padding(8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = product.nombre,
-                        modifier = Modifier
-                            .weight(3f)
-                            .background(
-                                color = androidx.compose.ui.graphics.Color.Transparent
-                            ))
-                    Text(
-                        text = "$${String.format("%.2f", product.precio)}",
-                        modifier = Modifier
-                            .weight(1.5f),
-                        textAlign = TextAlign.End)
-                    Text(
-                        text = "${product.cantidad}",
-                        modifier = Modifier
-                            .weight(1.5f),
-                        textAlign = TextAlign.End)
-                    Text(
-                        text = "$${String.format("%.2f", product.precio * product.cantidad)}",
-                        modifier = Modifier
-                            .weight(2f),
-                        textAlign = TextAlign.End)
-
-                }
-            }
-            item {
-                HorizontalDivider()
-                Text(
-                    text = "$${String.format("%.2f", productsOrder.sumOf { it.precio * it.cantidad })}",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp),
-                    textAlign = TextAlign.End
-                )
-            }
-
-            item {
+            Row(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
                 Button(
                     onClick = onBack
                 ) {
                     Text(
-                        text = "Regresar a menú"
+                        text = "Volver a menú"
+                    )
+                }
+                Button(
+                    onClick = onOrderConfirm
+                ) {
+                    Text(
+                        text = "Confirmar orden"
                     )
                 }
             }

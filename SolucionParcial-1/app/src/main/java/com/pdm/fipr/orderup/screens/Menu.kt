@@ -1,6 +1,7 @@
 package com.pdm.fipr.orderup.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -46,14 +47,13 @@ fun ProductMenu(
     onProductClick: (product: Product) -> Unit,
     onCheckOrder: () -> Unit
 ) {
-    //val clicksOnProduct by rememberSaveable() { mutableIntStateOf(0) }
 
     AppScaffold(
         modifier = Modifier,
         title = "Menú"
     ) { innerPadding ->
 
-            LazyColumn(
+            Column(
                 modifier = modifier
                     .fillMaxSize()
                     .padding(innerPadding)
@@ -61,88 +61,95 @@ fun ProductMenu(
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                items(menu) { product ->
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { onProductClick(product) },
-                        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                        shape = RoundedCornerShape(12.dp)
-                    ) {
-                        Row(
+                LazyColumn(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                        .weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    items(menu) { product ->
+                        Card(
                             modifier = Modifier
-                                .padding(16.dp)
                                 .fillMaxWidth()
+                                .clickable { onProductClick(product) },
+                            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                            shape = RoundedCornerShape(12.dp)
                         ) {
-                            AsyncImage(
-                                model = product.imagenUrl,
-                                contentDescription = "Imagen de producto",
+                            Row(
                                 modifier = Modifier
-                                    .size(120.dp)
-                                    .clip(RoundedCornerShape(8.dp))
-                                    .weight(0.5f),
-                                contentScale = ContentScale.Crop
-                            )
-
-                            Column(
-                                modifier = Modifier
-                                    .padding(start = 16.dp)
+                                    .padding(16.dp)
                                     .fillMaxWidth()
-                                    .weight(0.5f)
                             ) {
-                                Text(
-                                    text = product.nombre,
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    textAlign = TextAlign.Start,
+                                AsyncImage(
+                                    model = product.imagenUrl,
+                                    contentDescription = "Imagen de producto",
                                     modifier = Modifier
-                                        .padding(bottom = 8.dp)
-                                        .fillMaxWidth()
+                                        .size(120.dp)
+                                        .clip(RoundedCornerShape(8.dp))
+                                        .weight(0.5f),
+                                    contentScale = ContentScale.Crop
                                 )
 
-                                Spacer(Modifier.height(8.dp))
-
-                                Text(
-                                    text = "$${product.precio} c/u",
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    textAlign = TextAlign.Start,
-                                    fontWeight = FontWeight.SemiBold,
+                                Column(
                                     modifier = Modifier
-                                        .padding(bottom = 8.dp)
+                                        .padding(start = 16.dp)
                                         .fillMaxWidth()
-                                )
-                                Box(
-                                    modifier = Modifier
-                                        .size(26.dp)
-                                        .background(
-                                            color = MaterialTheme.colorScheme.secondary,
-                                            shape = CircleShape
-                                        ),
-                                    contentAlignment = Alignment.Center
+                                        .weight(0.5f)
                                 ) {
                                     Text(
-                                        text = "${productsOrder.find { it.id == product.id }?.cantidad ?: 0}",
-                                        style = MaterialTheme.typography.bodySmall,
-                                        color = Color.White
+                                        text = product.nombre,
+                                        style = MaterialTheme.typography.bodyLarge,
+                                        textAlign = TextAlign.Start,
+                                        modifier = Modifier
+                                            .padding(bottom = 8.dp)
+                                            .fillMaxWidth()
                                     )
+
+                                    //Spacer(Modifier.height(8.dp))
+
+                                    Text(
+                                        text = "$${product.precio} c/u",
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        textAlign = TextAlign.Start,
+                                        fontWeight = FontWeight.SemiBold,
+                                        modifier = Modifier
+                                            .padding(bottom = 8.dp)
+                                            .fillMaxWidth()
+                                    )
+                                    Box(
+                                        modifier = Modifier
+                                            .size(26.dp)
+                                            .background(
+                                                color = MaterialTheme.colorScheme.background,
+                                                shape = CircleShape
+                                            ),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Text(
+                                            text = "${productsOrder.find { it.id == product.id }?.cantidad ?: 0}",
+                                            style = MaterialTheme.typography.bodySmall,
+                                            color = MaterialTheme.colorScheme.onBackground,
+                                            textAlign = TextAlign.Center
+                                        )
+                                    }
                                 }
                             }
                         }
+                        //Spacer(modifier.height(16.dp))
                     }
-                    Spacer(modifier.height(16.dp))
                 }
+                Button(
+                    onClick = { onCheckOrder() },
+                    modifier = Modifier
+                        .padding(top = 8.dp)
+                ) {
+                    Text(
+                        text = "Ver orden",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
 
-                item {
-                    Button(
-                        onClick = { onCheckOrder() },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    ) {
-                        Text(
-                            text = "Ver orden",
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-
-                    }
                 }
             }
         }
