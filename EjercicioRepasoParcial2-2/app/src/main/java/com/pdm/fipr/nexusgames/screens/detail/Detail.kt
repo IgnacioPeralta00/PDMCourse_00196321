@@ -69,18 +69,18 @@ fun GameDetailScreen(
             LazyColumn(
                 modifier = Modifier
                     .padding(innerPadding)
+                    .fillMaxSize()
             ) {
                 item {
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(16.dp)
                     ) {
                         AsyncImage(
                             model = game.imageUrl,
                             contentDescription = game.title,
                             modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Fit
+                            contentScale = ContentScale.Crop
                         )
                     }
                 }
@@ -88,35 +88,30 @@ fun GameDetailScreen(
                 item {
                     Column(
                         modifier = Modifier
-                            .fillMaxSize(),
-                        horizontalAlignment = Alignment.CenterHorizontally,
+                            .padding(16.dp),
+                        horizontalAlignment = Alignment.Start,
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Text(
                             text = game.title,
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(16.dp)
                         )
                         Text(
                             text = "Metacritic Score: ${game.metacriticScore ?: "N/A"}",
                             style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.padding(16.dp)
                         )
                         Text(
                             text = "Release Date: ${game.releaseDate}",
                             style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.padding(16.dp)
                         )
                         Text(
                             text = "Platforms: ${game.platforms.joinToString(", ")}",
                             style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.padding(16.dp)
                         )
                         Text(
                             text = game.description,
                             style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.padding(16.dp)
 
                         )
                     }

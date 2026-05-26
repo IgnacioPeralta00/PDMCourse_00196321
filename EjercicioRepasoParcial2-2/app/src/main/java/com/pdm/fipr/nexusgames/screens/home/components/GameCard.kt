@@ -40,9 +40,7 @@ fun GameCard(
     ElevatedCard(
         modifier = Modifier
             .clickable { onGameClick(game.id) }
-            .width(234.dp) // 1% mas ancho, mantiene la relación de aspecto
-            .height(242.dp), // 1% mas alto
-        shape = RoundedCornerShape(16.dp),
+        ,shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp)
     ) {
         Column(
