@@ -24,7 +24,7 @@ fun GameDTO.toModel(): Game {
         title = name,
         description = description ?: "",
         imageUrl = backgroundImage ?: "",
-        metacriticScore = metacritic ?: 0,
+        metacriticScore = metacritic,
         releaseDate = released ?: "",
         platforms = platforms?.map { it.platform.name } ?: emptyList()
     )

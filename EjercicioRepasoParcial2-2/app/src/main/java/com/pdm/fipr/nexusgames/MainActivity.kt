@@ -22,14 +22,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             NexusGamesTheme {
-
-                val testingViewModel: HomeViewModel = viewModel()
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(text = "Revisando el Logcat para ver los datos de RAWG...")
-                }
+                MainNavigation()
             }
         }
     }

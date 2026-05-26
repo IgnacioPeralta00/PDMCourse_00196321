@@ -5,7 +5,7 @@ data class Game(
     val title: String,
     val description: String,
     val imageUrl: String,
-    val metacriticScore: Int,
+    val metacriticScore: Int?,
     val releaseDate: String,
     val platforms: List<String>
 )

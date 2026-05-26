@@ -5,6 +5,8 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import com.pdm.fipr.nexusgames.routes.Routes
+import com.pdm.fipr.nexusgames.screens.detail.GameDetailScreen
+import com.pdm.fipr.nexusgames.screens.home.HomeScreen
 
 @Composable
 fun MainNavigation() {
@@ -15,10 +17,17 @@ fun MainNavigation() {
         onBack = { backStack.removeLastOrNull() },
         entryProvider = entryProvider {
             entry<Routes.Home> {
-
+                HomeScreen(
+                    onGameClick = { id ->
+                        backStack.add(Routes.Detail(id))
+                    }
+                )
             }
-            entry<Routes.Detail> {
-
+            entry<Routes.Detail> { entry ->
+                GameDetailScreen(
+                    id = entry.id,
+                    onBackClick = { backStack.removeLastOrNull() }
+                )
             }
             entry<Routes.Wishlist> {
 
