@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -21,7 +23,8 @@ import com.pdm.fipr.nexusgames.screens.wishList.components.GameListCard
 
 @Composable
 fun WishListScreen(
-    viewModel: WishListViewModel = viewModel()
+    viewModel: WishListViewModel = viewModel(),
+    onBackClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val games = uiState.games
@@ -41,6 +44,14 @@ fun WishListScreen(
     }
     AppScaffold(
         title = "NexusGames",
+        navigationIcon = {
+            IconButton(onClick = onBackClick) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Back"
+                )
+            }
+        },
         actions = {
             IconButton(onClick = {/**/}) {
                 Icon(

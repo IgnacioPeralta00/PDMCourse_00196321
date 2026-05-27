@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pdm.fipr.nexusgames.data.repositories.gameRepository.GameApiRepository
 import com.pdm.fipr.nexusgames.data.repositories.gameRepository.GameRepository
+import com.pdm.fipr.nexusgames.data.repositories.wishListRepository.WishListRepository
+import com.pdm.fipr.nexusgames.model.Game
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -11,6 +13,7 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel : ViewModel() {
     private val repository: GameRepository = GameApiRepository()
+    private val wishListRepository = WishListRepository
     private val _uiState = MutableStateFlow(HomeUiState(loading = true))
     val uiState = _uiState.asStateFlow()
 
@@ -28,6 +31,13 @@ class HomeViewModel : ViewModel() {
                 )
             }
         }
+    }
+
+    fun addGameToWishList(game: Game) {
+        wishListRepository.addGame(game)
+    }
+    fun deleteGameFromWishList(game: Game) {
+        wishListRepository.deleteGame(game)
     }
 
 }

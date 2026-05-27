@@ -4,8 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Checklist
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -21,10 +20,11 @@ import com.pdm.fipr.nexusgames.screens.home.components.GamesHomeGrid
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = viewModel(),
-    onGameClick: (id: Int) -> Unit
+    onGameClick: (id: Int) -> Unit,
+    onWishListClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val game = uiState.games
+    val games = uiState.games
     val loading = uiState.loading
 
     if (loading) {
@@ -42,9 +42,9 @@ fun HomeScreen(
     AppScaffold(
         title = "NexusGames",
         actions = {
-            IconButton(onClick = {/**/}) {
+            IconButton(onClick = onWishListClick) {
                 Icon(
-                    imageVector = Icons.Default.Favorite,
+                    imageVector = Icons.Default.Checklist,
                     contentDescription = "Wish List"
                 )
             }
@@ -53,8 +53,9 @@ fun HomeScreen(
         GamesHomeGrid(
             modifier = Modifier
                 .padding(innerPadding),
-            games = game,
-            onCardClick = onGameClick
+            games = games,
+            onCardClick = onGameClick,
+            onFavoriteClick = { game -> viewModel.addGameToWishList(game) }
         )
     }
 }

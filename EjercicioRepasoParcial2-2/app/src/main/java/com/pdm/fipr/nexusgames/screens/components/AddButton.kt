@@ -14,24 +14,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
-/*@Composable
-fun AddToListButton() {
-    Surface(
-        color = MaterialTheme.colorScheme.outline,
-        modifier = Modifier.padding(start = 8.dp)
+@Composable
+fun AddToListButton(
+    onClick: () -> Unit
+) {
+    IconButton(
+        onClick = onClick,
     ) {
-        IconButton(
-            onClick = { *//*TODO*//* },
-        ) {
-            Icon(
-                imageVector = Icons.Default.Favorite,
-                contentDescription = "Add to list",
-                tint = MaterialTheme.colorScheme.onPrimary
-            )
-        }
+        Icon(
+            imageVector = Icons.Default.Favorite,
+            contentDescription = "Add to list",
+            tint = androidx.compose.ui.graphics.Color.White
+        )
     }
-}*/
+}
 
+/*
 @Composable
 fun AddToListButton(
     onClick: () -> Unit
@@ -46,6 +44,7 @@ fun AddToListButton(
         )
     }
 }
+*/
 
 
 @Preview(showBackground = true)

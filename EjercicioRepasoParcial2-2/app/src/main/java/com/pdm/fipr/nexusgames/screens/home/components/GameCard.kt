@@ -31,17 +31,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.pdm.fipr.nexusgames.model.Game
+import com.pdm.fipr.nexusgames.screens.components.AddToListButton
 
 @Composable
 fun GameCard(
     game: Game,
-    onGameClick: (id: Int) -> Unit
+    onGameClick: (id: Int) -> Unit,
+    onFavoriteClick: (game: Game) -> Unit
 ) {
     ElevatedCard(
         modifier = Modifier
             .clickable { onGameClick(game.id) }
         ,shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp)
+        elevation = CardDefaults
+            .elevatedCardElevation(defaultElevation = 4.dp)
     ) {
         Column(
             modifier = Modifier
@@ -59,6 +62,14 @@ fun GameCard(
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop
                 )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    AddToListButton(
+                        onClick = { onFavoriteClick(game) }
+                    )
+                }
             }
 
             Column(
@@ -100,7 +111,7 @@ fun GameCard(
 
 @Preview(showBackground = true)
 @Composable
-fun preview(){
+fun Preview(){
     GameCard(
         game = Game(
             id = 1,
@@ -111,7 +122,8 @@ fun preview(){
             releaseDate = "",
             platforms = emptyList(),
         ),
-        onGameClick = {}
+        onGameClick = {},
+        onFavoriteClick = {}
     )
 
 }

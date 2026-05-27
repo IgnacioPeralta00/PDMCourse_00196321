@@ -23,10 +23,10 @@ class WishListViewModel : ViewModel() {
         initialValue = WishListUiState(loading = true)
         )
 
-    fun addGame(game : Game) {
+    fun addGameToWishList(game : Game) {
         repository.addGame(game)
     }
-    fun deleteGame(game : Game) {
+    fun deleteGameFromWishList(game : Game) {
         repository.deleteGame(game)
     }
     fun clearWishList() {

@@ -14,7 +14,8 @@ import com.pdm.fipr.nexusgames.model.Game
 fun GamesHomeGrid(
     modifier: Modifier = Modifier,
     games: List<Game>,
-    onCardClick: (id: Int) -> Unit
+    onCardClick: (id: Int) -> Unit,
+    onFavoriteClick: (game: Game) -> Unit
 ) {
     LazyVerticalGrid(
         modifier = modifier,
@@ -25,7 +26,7 @@ fun GamesHomeGrid(
         contentPadding = PaddingValues(16.dp)
     ) {
         items(games) { game ->
-            GameCard(game, onCardClick)
+            GameCard(game, onCardClick, onFavoriteClick)
         }
     }
 }
