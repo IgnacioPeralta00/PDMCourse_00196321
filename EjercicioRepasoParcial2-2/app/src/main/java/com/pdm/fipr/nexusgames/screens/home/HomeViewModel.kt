@@ -33,11 +33,15 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    fun addGameToWishList(game: Game) {
+    fun onWishListChanged(game : Game) {
+        wishListRepository.onWishListChanged(game)
+    }
+
+    /*fun addGameToWishList(game: Game) {
         wishListRepository.addGame(game)
     }
     fun deleteGameFromWishList(game: Game) {
         wishListRepository.deleteGame(game)
-    }
+    }*/
 
 }

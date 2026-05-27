@@ -55,7 +55,7 @@ fun HomeScreen(
                 .padding(innerPadding),
             games = games,
             onCardClick = onGameClick,
-            onFavoriteClick = { game -> viewModel.addGameToWishList(game) }
+            onFavoriteClick = { game -> viewModel.onWishListChanged(game) }
         )
     }
 }

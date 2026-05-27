@@ -9,18 +9,17 @@ object WishListRepository {
     private val _wishList = MutableStateFlow(emptyList<Game>())
     val wishList = _wishList.asStateFlow()
 
-    fun addGame(game : Game) {
-       /* _wishList.value.toMutableList().add(game)*/
+
+    fun onWishListChanged(game : Game) {
         _wishList.update { currentList ->
-            currentList + game
+            if (game.id in currentList.map { game -> game.id }) {
+                currentList - game
+            } else {
+                currentList + game
+            }
         }
     }
-    fun deleteGame(game : Game) {
-        /*_wishList.value.toMutableList().remove(game)*/
-        _wishList.update { currentList ->
-            currentList - game
-        }
-    }
+
     fun clearWishList() {
         /*_wishList.value = emptyList()*/
         _wishList.update {

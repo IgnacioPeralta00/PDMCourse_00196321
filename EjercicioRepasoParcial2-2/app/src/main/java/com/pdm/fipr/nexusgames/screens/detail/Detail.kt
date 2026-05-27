@@ -25,8 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
-import com.pdm.fipr.nexusgames.model.Game
-import com.pdm.fipr.nexusgames.screens.components.AddToListButton
+import com.pdm.fipr.nexusgames.screens.components.FavoriteButton
 import com.pdm.fipr.nexusgames.screens.components.AppScaffold
 
 @Composable
@@ -103,9 +102,9 @@ fun GameDetailScreen(
                                 style = MaterialTheme.typography.titleLarge,
                                 fontWeight = FontWeight.Bold,
                             )
-                            AddToListButton(
+                            /*FavoriteButton(
                                 onClick = { viewModel.addGameToWishList(game) }
-                            )
+                            )*/
                         }
                         Text(
                             text = "Metacritic Score: ${game.metacriticScore ?: "N/A"}",

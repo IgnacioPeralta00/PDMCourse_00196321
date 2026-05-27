@@ -30,11 +30,4 @@ class DetailViewModel : ViewModel()  {
         }
     }
 
-    fun addGameToWishList(game: Game) {
-        wishListRepository.addGame(game)
-    }
-    fun deleteGameFromWishList(game: Game) {
-        wishListRepository.deleteGame(game)
-    }
-
 }
