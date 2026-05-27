@@ -36,12 +36,7 @@ class HomeViewModel : ViewModel() {
     fun onWishListChanged(game : Game) {
         wishListRepository.onWishListChanged(game)
     }
-
-    /*fun addGameToWishList(game: Game) {
-        wishListRepository.addGame(game)
+    fun isOnWishList(id: Int): Boolean {
+        return wishListRepository.isOnWishList(id)
     }
-    fun deleteGameFromWishList(game: Game) {
-        wishListRepository.deleteGame(game)
-    }*/
-
 }

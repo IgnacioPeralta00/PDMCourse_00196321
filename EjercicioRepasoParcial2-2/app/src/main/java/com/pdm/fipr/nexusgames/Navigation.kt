@@ -30,12 +30,18 @@ fun MainNavigation() {
             entry<Routes.Detail> { entry ->
                 GameDetailScreen(
                     id = entry.id,
-                    onBackClick = { backStack.removeLastOrNull() }
+                    onBackClick = { backStack.removeLastOrNull() },
+                    onWishListClick = {
+                        backStack.add(Routes.Wishlist)
+                    }
                 )
             }
             entry<Routes.Wishlist> {
                 WishListScreen(
-                    onBackClick = { backStack.removeLastOrNull() }
+                    onBackClick = { backStack.removeLastOrNull() },
+                    onGameClick = { id ->
+                        backStack.add(Routes.Detail(id))
+                    }
                 )
             }
         }

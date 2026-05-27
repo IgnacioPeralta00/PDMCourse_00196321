@@ -12,12 +12,17 @@ object WishListRepository {
 
     fun onWishListChanged(game : Game) {
         _wishList.update { currentList ->
-            if (game.id in currentList.map { game -> game.id }) {
-                currentList - game
+            val existingGame = currentList.any { it.id == game.id }
+            if (existingGame) {
+                currentList.filter { it.id != game.id }
             } else {
-                currentList + game
+                currentList + game.copy(isFavorite = true)
             }
         }
+    }
+
+    fun isOnWishList(id: Int): Boolean {
+        return _wishList.value.any { it.id == id }
     }
 
     fun clearWishList() {

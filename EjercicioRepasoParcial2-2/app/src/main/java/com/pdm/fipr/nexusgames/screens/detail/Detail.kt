@@ -1,23 +1,31 @@
 package com.pdm.fipr.nexusgames.screens.detail
 
+import androidx.activity.result.launch
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.CollectionsBookmark
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -27,16 +35,21 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.pdm.fipr.nexusgames.screens.components.FavoriteButton
 import com.pdm.fipr.nexusgames.screens.components.AppScaffold
+import kotlinx.coroutines.launch
 
 @Composable
 fun GameDetailScreen(
     id : Int,
     viewModel: DetailViewModel = viewModel(),
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onWishListClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val game = uiState.game
     val loading = uiState.loading
+
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
 
     LaunchedEffect(id) {
         viewModel.loadGame(id)
@@ -47,7 +60,8 @@ fun GameDetailScreen(
             Box(
                 Modifier
                     .fillMaxSize()
-                    .padding(padding), contentAlignment = Alignment.Center
+                    .padding(padding),
+                contentAlignment = Alignment.Center
             ) {
                 CircularProgressIndicator()
             }
@@ -57,11 +71,20 @@ fun GameDetailScreen(
 
     AppScaffold(
         title = game?.title ?: "NexusGame",
+        snackBarHostState = snackbarHostState,
         navigationIcon = {
             IconButton(onClick = { onBackClick() }) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "Back"
+                )
+            }
+        },
+        actions = {
+            IconButton(onClick = onWishListClick) {
+                Icon(
+                    imageVector = Icons.Default.CollectionsBookmark,
+                    contentDescription = "Wish List"
                 )
             }
         }
@@ -93,19 +116,40 @@ fun GameDetailScreen(
                         horizontalAlignment = Alignment.Start,
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Row(
-                            modifier = Modifier.fillMaxSize(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
+                        ElevatedCard(
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = CardDefaults.elevatedCardColors(
+                                containerColor = MaterialTheme.colorScheme.surfaceVariant
+                            ),
+                            elevation = CardDefaults.elevatedCardElevation(defaultElevation = 6.dp)
                         ) {
-                            Text(
-                                text = game.title,
-                                style = MaterialTheme.typography.titleLarge,
-                                fontWeight = FontWeight.Bold,
-                            )
-                            /*FavoriteButton(
-                                onClick = { viewModel.addGameToWishList(game) }
-                            )*/
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = game.title,
+                                    style = MaterialTheme.typography.titleLarge,
+                                    fontWeight = FontWeight.Bold,
+                                    modifier = Modifier.weight(1f)
+                                )
+
+                                FavoriteButton(
+                                    isFavorite = game.isFavorite,
+                                    onCheckedChange = {
+                                        viewModel.onWishListChanged(game)
+                                        scope.launch {
+                                            val message = if (!viewModel.isOnWishList(game.id)) "Eliminado de la lista" else "¡Añadido a tu lista!"
+                                            snackbarHostState.showSnackbar(message)
+                                        }
+                                    }
+                                )
+                            }
                         }
+
                         Text(
                             text = "Metacritic Score: ${game.metacriticScore ?: "N/A"}",
                             style = MaterialTheme.typography.bodyMedium,

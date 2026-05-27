@@ -23,6 +23,10 @@ class WishListViewModel : ViewModel() {
         initialValue = WishListUiState(loading = true)
         )
 
+    fun onWishListChanged(game : Game) {
+        repository.onWishListChanged(game)
+    }
+
     fun clearWishList() {
         repository.clearWishList()
     }

@@ -29,5 +29,11 @@ class DetailViewModel : ViewModel()  {
             }
         }
     }
+    fun onWishListChanged(game : Game) {
+        wishListRepository.onWishListChanged(game)
+    }
+    fun isOnWishList(id: Int): Boolean {
+        return wishListRepository.isOnWishList(id)
+    }
 
 }
