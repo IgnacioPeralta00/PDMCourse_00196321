@@ -7,6 +7,7 @@ import androidx.navigation3.ui.NavDisplay
 import com.pdm.fipr.nexusgames.routes.Routes
 import com.pdm.fipr.nexusgames.screens.detail.GameDetailScreen
 import com.pdm.fipr.nexusgames.screens.home.HomeScreen
+import com.pdm.fipr.nexusgames.screens.wishList.WishListScreen
 
 @Composable
 fun MainNavigation() {
@@ -30,7 +31,7 @@ fun MainNavigation() {
                 )
             }
             entry<Routes.Wishlist> {
-
+                WishListScreen()
             }
         }
     )
