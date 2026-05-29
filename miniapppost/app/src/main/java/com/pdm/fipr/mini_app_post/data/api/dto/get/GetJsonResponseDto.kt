@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GetJsonResponseDto(
-    val results : List<JsonDto>
+    val results: List<JsonDto>
 )
