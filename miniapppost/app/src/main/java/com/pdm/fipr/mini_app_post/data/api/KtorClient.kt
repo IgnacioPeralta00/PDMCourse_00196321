@@ -41,6 +41,7 @@ object KtorClient {
             url(BASE_URL)
            // url.parameters.append("key", API_KEY)
             header(HttpHeaders.Accept, "application/json")
+            header(HttpHeaders.ContentType, "application/json")
 
         }
     }

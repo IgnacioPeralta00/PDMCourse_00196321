@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 data class JsonDto(
     val userId : Int,
     val id : Int? = null,
-    val tittle : String,
+    val title : String,
     val body : String
 )
 
@@ -14,7 +14,7 @@ fun JsonDto.toModel() : Comment {
     return Comment(
         id = id ?: 0,
         userId = userId,
-        title = tittle,
+        title = title,
         body = body
     )
 }

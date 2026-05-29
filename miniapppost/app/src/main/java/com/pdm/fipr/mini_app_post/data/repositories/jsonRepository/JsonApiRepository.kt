@@ -2,7 +2,6 @@ package com.pdm.fipr.mini_app_post.data.repositories.jsonRepository
 
 import com.pdm.fipr.mini_app_post.data.api.KtorClient
 import com.pdm.fipr.mini_app_post.data.api.dto.JsonDto
-import com.pdm.fipr.mini_app_post.data.api.dto.get.GetJsonResponseDto
 import com.pdm.fipr.mini_app_post.data.api.dto.post.PostJsonRequestDto
 import com.pdm.fipr.mini_app_post.data.api.dto.toModel
 import com.pdm.fipr.mini_app_post.model.Comment
@@ -13,9 +12,9 @@ import io.ktor.client.request.setBody
 
 class JsonApiRepository : JsonRepository {
     override suspend fun getComments(): List<Comment> {
-        val response : GetJsonResponseDto = KtorClient.client.get("posts").body()
+        val response : List<JsonDto> = KtorClient.client.get("posts").body()
 
-        return response.results.map { jsonDto -> jsonDto.toModel() }
+        return response.map { jsonDto -> jsonDto.toModel() }
     }
 
     override suspend fun postComment(comment: Comment): Comment {

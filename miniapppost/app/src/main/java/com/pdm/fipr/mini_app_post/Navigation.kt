@@ -10,6 +10,7 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import com.pdm.fipr.mini_app_post.routes.Routes
 import com.pdm.fipr.mini_app_post.screens.home.HomeScreen
+import com.pdm.fipr.mini_app_post.screens.post.PostsScreen
 
 @Composable
 fun MainNavigation() {
@@ -20,10 +21,14 @@ fun MainNavigation() {
         onBack = { backStack.removeLastOrNull() },
         entryProvider = entryProvider {
             entry<Routes.Home> {
-                HomeScreen()
+                HomeScreen(
+                    onNavigateToPost = { backStack.add(Routes.Post) }
+                )
             }
             entry<Routes.Post> {
-
+                PostsScreen(
+                    onBack = { backStack.removeLastOrNull() }
+                )
             }
         },
         transitionSpec = {
