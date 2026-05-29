@@ -10,19 +10,28 @@ import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 
 class GameApiRepository: GameRepository  {
-    override suspend fun getGames(): List<Game> {
-        val response : GetGamesResponseDto = KtorClient.client.get("games") {
-            parameter("ordering", "-added")
-            parameter("metacritic", "94,100")
-            parameter("dates", "2000-01-01,2025-12-31")
-            parameter("page_size", 20)
-        }.body()
-
-        return response.results.map { gameDto -> gameDto.toModel() }
+    override suspend fun getGames(): Result<List<Game>> {
+        try {
+            val response : GetGamesResponseDto = KtorClient.client.get("games") {
+                parameter("ordering", "-added")
+                parameter("metacritic", "94,100")
+                parameter("dates", "2000-01-01,2025-12-31")
+                parameter("page_size", 50)
+            }.body()
+            return Result.success(response.results.map { gameDto -> gameDto.toModel() })
+        }
+        catch (e: Exception) {
+            return Result.failure(e)
+        }
     }
-    override suspend fun getGameById(id: Int): Game {
-        val response : GameDTO = KtorClient.client.get("games/$id").body()
+    override suspend fun getGameById(id: Int): Result<Game> {
+        try {
+            val response : GameDTO = KtorClient.client.get("games/$id").body()
 
-        return response.toModel()
+            return Result.success(response.toModel())
+        }
+        catch (e: Exception) {
+            return Result.failure(e)
+        }
     }
 }
