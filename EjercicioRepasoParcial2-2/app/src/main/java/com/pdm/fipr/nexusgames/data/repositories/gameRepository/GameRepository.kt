@@ -5,4 +5,5 @@ import com.pdm.fipr.nexusgames.model.Game
 interface GameRepository {
     suspend fun getGames(): Result<List<Game>>
     suspend fun getGameById(id: Int): Result<Game>
+    suspend fun searchGames(query: String): Result<List<Game>>
 }

@@ -10,4 +10,6 @@ sealed class Routes : NavKey {
     data class Detail(val id: Int) : Routes()
     @Serializable
     data object Wishlist : Routes()
+    @Serializable
+    data object Search : Routes()
 }

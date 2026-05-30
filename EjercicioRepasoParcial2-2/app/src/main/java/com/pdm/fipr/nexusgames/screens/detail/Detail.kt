@@ -152,7 +152,6 @@ fun GameDetailScreen(
                                     modifier = Modifier.padding(16.dp),
                                     verticalArrangement = Arrangement.spacedBy(24.dp)
                                 ) {
-                                    // TARJETA DE TÍTULO Y FAVORITO
                                     ElevatedCard(
                                         modifier = Modifier.fillMaxWidth(),
                                         colors = CardDefaults.elevatedCardColors(
@@ -177,7 +176,7 @@ fun GameDetailScreen(
                                                 onCheckedChange = {
                                                     viewModel.onWishListChanged(game)
                                                     scope.launch {
-                                                        val message = if (!viewModel.isOnWishList(game.id)) "Eliminado de la lista" else "¡Añadido a tu lista!"
+                                                        val message = if (viewModel.isOnWishList(game.id)) "Añadido a tu lista" else "Eliminado de la lista"
                                                         snackbarHostState.showSnackbar(message)
                                                     }
                                                 }
@@ -247,7 +246,6 @@ fun GameDetailScreen(
 
                                     HorizontalDivider(thickness = 0.5.dp)
 
-                                    // PLATAFORMAS
                                     Column(
                                         verticalArrangement = Arrangement.spacedBy(8.dp)
                                     ) {
@@ -270,7 +268,6 @@ fun GameDetailScreen(
 
                                     HorizontalDivider(thickness = 0.5.dp)
 
-                                    // DESCRIPCIÓN
                                     Column(
                                         verticalArrangement = Arrangement.spacedBy(8.dp)
                                     ) {

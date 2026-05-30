@@ -8,6 +8,7 @@ import com.pdm.fipr.nexusgames.model.Game
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
+import kotlinx.coroutines.delay
 
 class GameApiRepository: GameRepository  {
     override suspend fun getGames(): Result<List<Game>> {
@@ -29,6 +30,20 @@ class GameApiRepository: GameRepository  {
             val response : GameDTO = KtorClient.client.get("games/$id").body()
 
             return Result.success(response.toModel())
+        }
+        catch (e: Exception) {
+            return Result.failure(e)
+        }
+    }
+
+    override suspend fun searchGames(query: String): Result<List<Game>> {
+        try {
+            val response : GetGamesResponseDto = KtorClient.client.get("games") {
+                parameter("search", query)
+                parameter("ordering", "-added")
+                parameter("page_size", 15)
+            }.body()
+            return Result.success(response.results.map { gameDto -> gameDto.toModel() })
         }
         catch (e: Exception) {
             return Result.failure(e)

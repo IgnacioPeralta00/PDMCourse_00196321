@@ -11,6 +11,7 @@ import androidx.navigation3.ui.NavDisplay
 import com.pdm.fipr.nexusgames.routes.Routes
 import com.pdm.fipr.nexusgames.screens.detail.GameDetailScreen
 import com.pdm.fipr.nexusgames.screens.home.HomeScreen
+import com.pdm.fipr.nexusgames.screens.search.SearchScreen
 import com.pdm.fipr.nexusgames.screens.wishList.WishListScreen
 
 @Composable
@@ -28,6 +29,9 @@ fun MainNavigation() {
                     },
                     onWishListClick = {
                         backStack.add(Routes.Wishlist)
+                    },
+                    onSearchClick = {
+                        backStack.add(Routes.Search)
                     }
                 )
             }
@@ -42,6 +46,14 @@ fun MainNavigation() {
             }
             entry<Routes.Wishlist> {
                 WishListScreen(
+                    onBackClick = { backStack.removeLastOrNull() },
+                    onGameClick = { id ->
+                        backStack.add(Routes.Detail(id))
+                    }
+                )
+            }
+            entry<Routes.Search> {
+                SearchScreen(
                     onBackClick = { backStack.removeLastOrNull() },
                     onGameClick = { id ->
                         backStack.add(Routes.Detail(id))

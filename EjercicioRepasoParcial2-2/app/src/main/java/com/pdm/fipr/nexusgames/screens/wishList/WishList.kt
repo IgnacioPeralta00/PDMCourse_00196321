@@ -1,6 +1,5 @@
 package com.pdm.fipr.nexusgames.screens.wishList
 
-import androidx.activity.result.launch
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,7 +8,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -25,7 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pdm.fipr.nexusgames.screens.components.AppScaffold
-import com.pdm.fipr.nexusgames.screens.wishList.components.GameListCard
+import com.pdm.fipr.nexusgames.screens.components.GameListCard
 import kotlinx.coroutines.launch
 
 @Composable
