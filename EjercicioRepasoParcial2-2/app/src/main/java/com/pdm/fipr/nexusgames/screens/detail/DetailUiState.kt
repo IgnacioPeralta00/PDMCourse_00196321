@@ -4,5 +4,7 @@ import com.pdm.fipr.nexusgames.model.Game
 
 data class DetailUiState(
     val game: Game? = null,
-    val loading: Boolean = false
+    val loading: Boolean = false,
+    val error : String? = null,
+    val isRefreshing : Boolean = false
 )

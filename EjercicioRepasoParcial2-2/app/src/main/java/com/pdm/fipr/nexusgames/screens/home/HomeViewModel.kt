@@ -14,34 +14,33 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class HomeViewModel : ViewModel() {
-    private val repository: GameRepository = GameApiRepository()
+    private val gameRepository: GameRepository = GameApiRepository()
     private val wishListRepository = WishListRepository
+    private val _apiGames = MutableStateFlow<List<Game>>(emptyList()) // Flujo para los juegos de la API
+    private val _isLoading = MutableStateFlow(true) // Flujo para el estado de carga
+    private val _error = MutableStateFlow<String?>(null) // Flujo para el estado de error
+    private val _isRefreshing = MutableStateFlow(false) // Flujo para el estado de actualización
 
-    // Creamos un tanque privado SOLO para los juegos crudos que vienen de la API
-    private val _apiGames = MutableStateFlow<List<Game>>(emptyList())
-    // Y un tanque para manejar si está cargando o no
-    private val _isLoading = MutableStateFlow(true)
 
-    // Combinamos los juegos de la API con la tubería de Favoritos
     val uiState: StateFlow<HomeUiState> = combine(
         _apiGames,
         wishListRepository.wishList,
-        _isLoading
-    ) { apiGames, wishList, isLoading ->
+        _isLoading,
+        _error,
+        _isRefreshing
+    ) { apiGames, wishList, isLoading, errorMsg, isRefreshing ->
 
-        // Por cada juego de la API, revisamos si su ID existe en la lista de favoritos
         val mergedGames = apiGames.map { apiGame ->
-        // Revisamos si el juego actual existe en la lista de favoritos
             val isFavorite = wishList.any { favGame -> favGame.id == apiGame.id }
 
-            // Creamos una copia del juego actualizando su estado de favorito
             apiGame.copy(isFavorite = isFavorite)
         }
 
-        // Empaquetamos todo en nuestro UiState final
         HomeUiState(
             games = mergedGames,
-            loading = isLoading
+            loading = isLoading,
+            error = errorMsg,
+            isRefreshing = isRefreshing
         )
     }.stateIn(
         scope = viewModelScope,
@@ -52,14 +51,37 @@ class HomeViewModel : ViewModel() {
     init {
         loadHome()
     }
-
-    // La función load ahora solo actualiza el tanque de la API
-    private fun loadHome() {
+    fun loadHome() {
         viewModelScope.launch {
             _isLoading.value = true
-            val games = repository.getGames()
-            _apiGames.value = games
-            _isLoading.value = false
+            _error.value = null
+            gameRepository.getGames()
+                .onSuccess { apiGames ->
+                    _apiGames.value = apiGames
+                    _isLoading.value = false
+                }
+                .onFailure { error ->
+                    _error.value = error.message ?: "Error desconocido"
+                    _isLoading.value = false
+                }
+        }
+    }
+
+    fun refreshHome() {
+        viewModelScope.launch {
+            _error.value = null
+            _isRefreshing.value = true
+            _isLoading.value = true
+            gameRepository.getGames()
+                .onSuccess { apiGames ->
+                    _apiGames.value = apiGames
+                    _isLoading.value = false
+                }
+                .onFailure { error ->
+                    _error.value = error.message ?: "Error desconocido"
+                    _isLoading.value = false
+                }
+            _isRefreshing.value = false
         }
     }
 
