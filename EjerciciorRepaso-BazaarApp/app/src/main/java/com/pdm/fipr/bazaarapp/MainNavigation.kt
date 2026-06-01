@@ -9,6 +9,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import com.pdm.fipr.bazaarapp.routes.Routes
+import com.pdm.fipr.bazaarapp.screens.cart.CartScreen
 import com.pdm.fipr.bazaarapp.screens.detail.DetailScreen
 import com.pdm.fipr.bazaarapp.screens.home.HomeScreen
 
@@ -22,13 +23,19 @@ fun Navigator() {
         entryProvider = entryProvider {
             entry<Routes.Home> {
                 HomeScreen(
-                    onProductClick = { id -> backStack.add(Routes.Detail(id)) }
+                    onProductClick = { id -> backStack.add(Routes.Detail(id)) },
+                    onCartClick = { backStack.add(Routes.Cart) }
                 )
             }
             entry<Routes.Detail> { entry ->
                 DetailScreen(
                     productId = entry.id,
                     onBackClick = { backStack.removeLastOrNull() }
+                )
+            }
+            entry<Routes.Cart> {
+                CartScreen(
+                    onBack = { backStack.removeLastOrNull() }
                 )
             }
         },

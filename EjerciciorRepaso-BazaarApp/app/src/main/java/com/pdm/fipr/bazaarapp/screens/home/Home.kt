@@ -22,7 +22,8 @@ import com.pdm.fipr.bazaarapp.screens.home.components.HomeGrid
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = viewModel(),
-    onProductClick: (id: Int) -> Unit
+    onProductClick: (id: Int) -> Unit,
+    onCartClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -61,7 +62,7 @@ fun HomeScreen(
             AppScaffold(
                 title = "BazaarApp",
                 actions = {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = { onCartClick() }) {
                         Icon(
                             imageVector = Icons.Default.ShoppingCartCheckout,
                             contentDescription = null

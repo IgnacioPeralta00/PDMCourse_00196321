@@ -2,8 +2,10 @@ package com.pdm.fipr.bazaarapp.screens.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.pdm.fipr.bazaarapp.data.repositories.cartRepository.CartRepository
 import com.pdm.fipr.bazaarapp.data.repositories.productsRepository.ProductsApiRepository
 import com.pdm.fipr.bazaarapp.data.repositories.productsRepository.ProductsRepository
+import com.pdm.fipr.bazaarapp.models.Product
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,6 +15,7 @@ import kotlinx.coroutines.launch
 class DetailViewModel : ViewModel() {
     private val productsRepository : ProductsRepository =
         ProductsApiRepository() // Instancia del repositorio
+    private val cartRepository = CartRepository // Instancia del repositorio
     private val _uiState = MutableStateFlow(DetailUiState(isLoading = true))
     val uiState : StateFlow<DetailUiState> = _uiState.asStateFlow()
 
@@ -61,5 +64,9 @@ class DetailViewModel : ViewModel() {
                     }
                 }
         }
+    }
+
+    fun addToCart(product: Product) {
+        cartRepository.AddToCart(product)
     }
 }

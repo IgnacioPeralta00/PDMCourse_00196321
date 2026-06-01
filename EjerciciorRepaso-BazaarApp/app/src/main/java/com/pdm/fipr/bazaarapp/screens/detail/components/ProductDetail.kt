@@ -21,7 +21,7 @@ import com.pdm.fipr.bazaarapp.models.Product
 @Composable
 fun ProductDetail(
     product: Product? = null,
-    onAddToCart: (Product) -> Unit // Callback para la acción de compra
+    onAddToCart: () -> Unit
 ) {
     product?.let {
         Column(
@@ -29,7 +29,6 @@ fun ProductDetail(
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {
-            // 1. Sección de Imagen: Fondo sutil para resaltar el producto
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -45,15 +44,12 @@ fun ProductDetail(
                     contentScale = ContentScale.Fit
                 )
             }
-
-            // 2. Información del Producto
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                // Fila de Categoría y Rating
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -82,15 +78,11 @@ fun ProductDetail(
                         )
                     }
                 }
-
-                // Título
                 Text(
                     text = product.title,
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold
                 )
-
-                // Precio
                 Text(
                     text = "${product.price}€",
                     style = MaterialTheme.typography.headlineSmall,
@@ -102,8 +94,6 @@ fun ProductDetail(
                     modifier = Modifier.padding(vertical = 4.dp),
                     color = MaterialTheme.colorScheme.outlineVariant
                 )
-
-                // Descripción
                 Text(
                     text = "Acerca de este artículo",
                     style = MaterialTheme.typography.titleMedium,
@@ -118,9 +108,8 @@ fun ProductDetail(
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                // Botón "Añadir al carrito"
                 Button(
-                    onClick = { onAddToCart(product) },
+                    onClick = { onAddToCart() },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),

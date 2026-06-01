@@ -1,16 +1,15 @@
-package com.pdm.fipr.bazaarapp.screens.detail
+package com.pdm.fipr.bazaarapp.screens.cart
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -18,27 +17,20 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pdm.fipr.bazaarapp.screens.components.AppScaffold
 import com.pdm.fipr.bazaarapp.screens.components.ErrorScreen
-import com.pdm.fipr.bazaarapp.screens.detail.components.ProductDetail
 
 @Composable
-fun DetailScreen(
-    productId : Int,
-    onBackClick : () -> Unit,
-    viewModel : DetailViewModel = viewModel(),
+fun CartScreen(
+    cartViewModel: CartViewModel = viewModel(),
+    onBack : () -> Unit
 ) {
-    val uiState by viewModel.uiState.collectAsState()
-
-    LaunchedEffect(productId) {
-        viewModel.loadProduct(productId)
-    }
-
+    val uiState by cartViewModel.uiState.collectAsState()
     when {
         uiState.isLoading -> {
-            AppScaffold(title = "") { paddingValues ->
+            AppScaffold(title = "") { padding ->
                 Box(
                     Modifier
                         .fillMaxSize()
-                        .padding(paddingValues),
+                        .padding(padding),
                     contentAlignment = Alignment.Center
                 ) {
                     CircularProgressIndicator()
@@ -48,16 +40,16 @@ fun DetailScreen(
         uiState.error != null -> {
             AppScaffold(
                 title = ""
-            ) { paddingValues ->
+            ) { contentPadding ->
                 PullToRefreshBox(
                     isRefreshing = uiState.isRefreshing,
-                    onRefresh = { viewModel.refresh(productId) },
+                    onRefresh = { /*viewModel.refreshHome()*/ },
                     modifier = Modifier
-                        .padding(paddingValues)
+                        .padding(contentPadding)
                         .fillMaxSize()
                 ) {
                     ErrorScreen(
-                        onRetryClick = { viewModel.refresh(productId) },
+                        onRetryClick = { /*viewModel.refresh()*/ },
                         error = uiState.error
                     )
                 }
@@ -65,27 +57,26 @@ fun DetailScreen(
         }
         else -> {
             AppScaffold(
-                title = "Detalle",
+                title = "Cart",
                 navigationIcon = {
-                    IconButton(onClick = { onBackClick() }) {
+                    IconButton(
+                        onClick = { onBack() }
+                    ) {
                         Icon(
-                            imageVector = Icons.Default.ArrowBack,
+                            imageVector = Icons.Default.ArrowBackIosNew,
                             contentDescription = null
                         )
                     }
                 }
-            ) { paddingValues ->
+            ) { contentPadding ->
                 PullToRefreshBox(
                     isRefreshing = uiState.isRefreshing,
-                    onRefresh = { viewModel.refresh(productId) },
+                    onRefresh = { /*viewModel.refresh()*/ },
                     modifier = Modifier
-                        .padding(paddingValues)
+                        .padding(contentPadding)
                         .fillMaxSize()
                 ) {
-                    ProductDetail(
-                        product = uiState.product,
-                        onAddToCart = { uiState.product?.let { viewModel.addToCart(it) } },
-                    )
+
                 }
             }
         }
