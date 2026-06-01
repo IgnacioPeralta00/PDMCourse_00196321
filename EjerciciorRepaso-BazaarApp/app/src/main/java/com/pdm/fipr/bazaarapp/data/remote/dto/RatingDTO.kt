@@ -6,9 +6,4 @@ import kotlinx.serialization.Serializable
 data class RatingDTO(
     val rate: Double,
     val count: Int
-
-)
-@Serializable
-data class RatingContainerDTO(
-    val rating: RatingDTO
 )

@@ -9,6 +9,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import com.pdm.fipr.bazaarapp.routes.Routes
+import com.pdm.fipr.bazaarapp.screens.home.HomeScreen
 
 @Composable
 fun Navigator() {
@@ -18,8 +19,9 @@ fun Navigator() {
         backStack = backStack,
         onBack = { backStack.removeLastOrNull() },
         entryProvider = entryProvider {
-            entry<Routes.Home> {}
-
+            entry<Routes.Home> {
+                HomeScreen()
+            }
         },
         transitionSpec = {
             slideInHorizontally(

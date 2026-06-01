@@ -2,6 +2,8 @@ package com.pdm.fipr.bazaarapp.data.remote.dto
 
 import com.pdm.fipr.bazaarapp.models.Product
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+
 
 @Serializable
 data class ProductDTO(
@@ -10,8 +12,8 @@ data class ProductDTO(
     val price : Double,
     val description : String,
     val category : String,
-    val imageURL : String,
-    val rating : RatingContainerDTO
+    @SerialName("image") val imageURL : String,
+    val rating : RatingDTO
 )
 
 fun ProductDTO.toModel() : Product {
@@ -22,6 +24,6 @@ fun ProductDTO.toModel() : Product {
         description = description,
         category = category,
         imageURL = imageURL,
-        rating = rating.rating.rate
+        rating = rating.rate
     )
 }
