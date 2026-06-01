@@ -84,7 +84,7 @@ fun DetailScreen(
                 ) {
                     ProductDetail(
                         product = uiState.product,
-                        onAddToCart = { uiState.product?.let { viewModel.addToCart(it) } },
+                        onAddToCart = { uiState.product?.let { product -> viewModel.addToCart(product) } },
                     )
                 }
             }

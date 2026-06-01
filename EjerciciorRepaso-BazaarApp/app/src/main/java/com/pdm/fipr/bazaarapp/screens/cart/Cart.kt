@@ -15,15 +15,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.pdm.fipr.bazaarapp.screens.cart.components.CartList
 import com.pdm.fipr.bazaarapp.screens.components.AppScaffold
 import com.pdm.fipr.bazaarapp.screens.components.ErrorScreen
 
 @Composable
 fun CartScreen(
-    cartViewModel: CartViewModel = viewModel(),
-    onBack : () -> Unit
+    viewModel: CartViewModel = viewModel(),
+    onBack : () -> Unit,
+    onDetail : (productId : Int) -> Unit
 ) {
-    val uiState by cartViewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
     when {
         uiState.isLoading -> {
             AppScaffold(title = "") { padding ->
@@ -76,7 +78,14 @@ fun CartScreen(
                         .padding(contentPadding)
                         .fillMaxSize()
                 ) {
-
+                    CartList(
+                        cartItems = uiState.cartItems,
+                        totalPrice = uiState.totalPrice,
+                        onIncrease = { product -> viewModel.increaseQuantity(product) },
+                        onDecrease = { product -> viewModel.decreaseQuantity(product) },
+                        onDelete = { product -> viewModel.deleteFromCart(product) },
+                        onViewDetail = { product -> onDetail(product.id) },
+                    )
                 }
             }
         }

@@ -35,7 +35,8 @@ fun Navigator() {
             }
             entry<Routes.Cart> {
                 CartScreen(
-                    onBack = { backStack.removeLastOrNull() }
+                    onBack = { backStack.removeLastOrNull() },
+                    onDetail = { id -> backStack.add(Routes.Detail(id)) }
                 )
             }
         },

@@ -28,7 +28,19 @@ class CartViewModel : ViewModel() {
         )
 
     fun addToCart(product: Product) {
-        cartRepository.AddToCart(product)
+        cartRepository.addToCart(product)
+    }
+
+    fun deleteFromCart(product: Product) {
+        cartRepository.deleteFromCart(product)
+    }
+
+    fun increaseQuantity(product: Product) {
+        cartRepository.increaseQuantity(product)
+    }
+
+    fun decreaseQuantity(product: Product) {
+        cartRepository.decreaseQuantity(product)
     }
 
     fun clearCart() {
