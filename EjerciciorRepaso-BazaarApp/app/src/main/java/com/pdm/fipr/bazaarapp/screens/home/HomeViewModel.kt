@@ -71,7 +71,7 @@ class HomeViewModel : ViewModel()  {
 
     fun refresh() {
         viewModelScope.launch {
-            _isLoading.update { true }
+            _isRefreshing.update { true }
             _error.update { null }
             productsRepository.getProducts()
                 .onSuccess { products ->
@@ -87,7 +87,7 @@ class HomeViewModel : ViewModel()  {
                 .onFailure { error ->
                     _error.update { error.message }
                 }
-            _isLoading.update { false }
+            _isRefreshing.update { false }
         }
     }
 }

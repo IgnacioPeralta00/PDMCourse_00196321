@@ -14,7 +14,8 @@ import com.pdm.fipr.bazaarapp.screens.components.ProductCard
 
 @Composable
 fun HomeGrid(
-    productsByCategory: Map<String, List<Product>>
+    productsByCategory: Map<String, List<Product>>,
+    onProductClick: (id: Int) -> Unit
 ) {
     LazyVerticalGrid(
         columns = GridCells
@@ -30,7 +31,7 @@ fun HomeGrid(
             items(products) { product ->
                 ProductCard(
                     product = product,
-                    onProductClick = { /*TODO*/ }
+                    onProductClick = { onProductClick(product.id) }
                 )
             }
         }

@@ -32,30 +32,28 @@ import com.pdm.fipr.bazaarapp.models.Product
 @Composable
 fun ProductCard(
     product: Product,
-    onProductClick: (id: Int) -> Unit,
+    onProductClick: () -> Unit,
 ) {
     ElevatedCard(
         modifier = Modifier
-            .clickable { onProductClick(product.id) }
-        ,shape = RoundedCornerShape(16.dp),
+            .fillMaxWidth()
+            .clickable { onProductClick() },
+        shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults
             .elevatedCardElevation(defaultElevation = 4.dp)
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.Top
-        ) {
+        Column {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(160.dp)
+                    .padding(8.dp)
             ) {
                 AsyncImage(
                     model = product.imageURL,
                     contentDescription = product.title,
                     modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
+                    contentScale = ContentScale.Fit
                 )
             }
             Column(
