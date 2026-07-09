@@ -26,4 +26,7 @@ interface QuestionDao {
 
     @Update
     suspend fun updateQuestion(question: QuestionEntity)
+
+    /*@Query("")
+    suspend fun getQuestionary(): Flow<List<QuestionWithOptions>>*/
 }

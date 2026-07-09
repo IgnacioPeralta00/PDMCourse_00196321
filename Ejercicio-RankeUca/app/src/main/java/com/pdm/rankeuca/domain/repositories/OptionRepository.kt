@@ -1,11 +1,13 @@
 package com.pdm.rankeuca.domain.repositories
 
+import com.pdm.rankeuca.data.remote.dto.VoteItemDto
 import com.pdm.rankeuca.domain.models.Option
 import kotlinx.coroutines.flow.Flow
 
 interface OptionRepository {
     suspend fun getPlaces(): Result<List<Option>>
 
+    suspend fun bulkVote(votes: List<VoteItemDto>): Result<Boolean>
     suspend fun votePlace(placeId: Int): Result<Boolean>
 
     fun getOptions(questionId: Int): Flow<List<Option>>

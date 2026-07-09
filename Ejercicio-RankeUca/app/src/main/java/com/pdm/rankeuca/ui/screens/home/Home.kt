@@ -10,7 +10,8 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    onGestorClick: () -> Unit
+    onGestorClick: () -> Unit,
+    onMassiveVoteClick: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -39,23 +40,14 @@ fun HomeScreen(
             }
 
             ElevatedCard(
-                onClick = { },
-                enabled = false,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
+                onClick = onMassiveVoteClick,
+                enabled = true,
+                modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
             ) {
                 Column(modifier = Modifier.padding(24.dp)) {
-                    Text(
-                        "Votar",
-                        style = MaterialTheme.typography.headlineSmall,
-                        color = MaterialTheme.colorScheme.outline
-                    )
+                    Text("Voto Masivo", style = MaterialTheme.typography.headlineSmall)
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        "Próximamente (Sincronización remota)",
-                        color = MaterialTheme.colorScheme.outline
-                    )
+                    Text("Participa en las votaciones en tiempo real.")
                 }
             }
         }

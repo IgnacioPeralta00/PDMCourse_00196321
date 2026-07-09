@@ -9,6 +9,9 @@ import com.pdm.rankeuca.data.remote.dto.PostResponseDto
 import com.pdm.rankeuca.data.remote.dto.toModel
 import com.pdm.rankeuca.data.local.entities.toModel
 import com.pdm.rankeuca.data.local.entities.toEntity
+import com.pdm.rankeuca.data.remote.dto.BulkVoteRequestDto
+import com.pdm.rankeuca.data.remote.dto.BulkVoteResponseDto
+import com.pdm.rankeuca.data.remote.dto.VoteItemDto
 import com.pdm.rankeuca.domain.models.Option
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -28,6 +31,17 @@ class OptionRepositoryImpl(
         }
         catch (e: Exception) {
             return Result.failure(e)
+        }
+    }
+    override suspend fun bulkVote(votes: List<VoteItemDto>): Result<Boolean> {
+        return try {
+            val request = BulkVoteRequestDto(votes = votes)
+            val response: BulkVoteResponseDto = ktorClient.client.post("parcialtres/votes") {
+                setBody(request)
+            }.body()
+            Result.success(true)
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 

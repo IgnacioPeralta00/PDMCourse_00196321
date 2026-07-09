@@ -20,7 +20,7 @@ class AppProvider(context: Context) {
         OptionRepositoryImpl(optionDao, ktorClient)
 
     private val questionRepository: QuestionRepository =
-        QuestionRepositoryImpl(questionDao)
+        QuestionRepositoryImpl(questionDao, ktorClient)
 
     fun provideOptionRepository(): OptionRepository {
         return optionRepository
