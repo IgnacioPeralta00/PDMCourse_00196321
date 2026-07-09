@@ -53,7 +53,7 @@ class OptionRepositoryImpl(
     }
 
     override suspend fun addOption(name: String, imageUrl: String, questionId: Int) {
-        val option = Option(name = name, imageUrl = imageUrl, questionId = questionId)
+        val option = Option(value = name, imageUrl = imageUrl, questionId = questionId)
         optionDao.insertOption(option.toEntity())
     }
 
@@ -61,4 +61,7 @@ class OptionRepositoryImpl(
         optionDao.deleteOption(option.toEntity())
     }
 
+    override suspend fun updateOption(option: Option) {
+        optionDao.updateOption(option.toEntity())
+    }
 }

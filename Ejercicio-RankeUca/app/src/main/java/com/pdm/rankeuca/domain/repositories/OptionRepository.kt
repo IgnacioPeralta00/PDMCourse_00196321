@@ -13,4 +13,6 @@ interface OptionRepository {
     suspend fun addOption(name: String, imageUrl: String, questionId: Int)
 
     suspend fun deleteOption(option: Option)
+
+    suspend fun updateOption(option: Option)
 }

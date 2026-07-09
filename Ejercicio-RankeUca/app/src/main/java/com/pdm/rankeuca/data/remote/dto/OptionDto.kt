@@ -13,7 +13,7 @@ data class OptionDto(
 
 fun OptionDto.toModel() = Option(
     id = id,
-    name = name,
+    value = name,
     imageUrl = imageUrl,
     votes = votes
 )

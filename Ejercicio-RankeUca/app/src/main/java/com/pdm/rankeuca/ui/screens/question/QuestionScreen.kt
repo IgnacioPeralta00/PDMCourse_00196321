@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -14,6 +15,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DeleteOutline
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Inbox
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -36,8 +38,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.pdm.rankeuca.domain.models.Question
 import com.pdm.rankeuca.ui.screens.question.QuestionViewModel
-import com.pdmcourse2026.RankeUca.ui.screens.components.BottomSheet
+import com.pdm.rankeuca.ui.screens.components.BottomSheet
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,6 +50,7 @@ fun QuestionScreen(
 ) {
     val questions by viewModel.questions.collectAsStateWithLifecycle()
     var showSheet by rememberSaveable { mutableStateOf(false) }
+    var questionSelected by rememberSaveable { mutableStateOf<Question?>(null) }
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
@@ -121,12 +125,21 @@ fun QuestionScreen(
                                     )
                                 },
                                 trailingContent = {
-                                    IconButton(onClick = { viewModel.deleteQuestion(question) }) {
-                                        Icon(
-                                            imageVector = Icons.Default.DeleteOutline,
-                                            contentDescription = "Borrar ${question.title}",
-                                            tint = MaterialTheme.colorScheme.error
-                                        )
+                                    Row {
+                                        IconButton(onClick = { showSheet = true ; questionSelected = question }) {
+                                            Icon(
+                                                imageVector = Icons.Default.Edit,
+                                                contentDescription = "Ver detalle de ${question.title}",
+                                                tint = MaterialTheme.colorScheme.primary
+                                            )
+                                        }
+                                        IconButton(onClick = { viewModel.deleteQuestion(question) }) {
+                                            Icon(
+                                                imageVector = Icons.Default.DeleteOutline,
+                                                contentDescription = "Borrar ${question.title}",
+                                                tint = MaterialTheme.colorScheme.error
+                                            )
+                                        }
                                     }
                                 }
                             )
@@ -140,12 +153,22 @@ fun QuestionScreen(
     if (showSheet) {
         BottomSheet(
             onSaveForQuestion = { title ->
-                viewModel.addQuestion(title)
+                if (questionSelected == null) {
+                    viewModel.addQuestion(title)
+                } else {
+
+                    viewModel.updateQuestion(questionSelected!!.copy(title = title))
+                }
                 showSheet = false
+                questionSelected = null
             },
             isOption = false,
-            onDismiss = { showSheet = false },
-            onSaveForOption = { _, _ -> }
+            onDismiss = {
+                showSheet = false
+                questionSelected = null
+            },
+            onSaveForOption = { _, _ -> },
+            question = questionSelected
         )
     }
 }

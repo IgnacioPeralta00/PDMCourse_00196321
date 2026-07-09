@@ -7,4 +7,6 @@ interface QuestionRepository {
     fun getQuestions(): Flow<List<Question>>
     suspend fun addQuestion(title: String)
     suspend fun deleteQuestion(question: Question)
+
+    suspend fun updateQuestion(question: Question)
 }

@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import com.pdm.rankeuca.data.local.entities.QuestionEntity
 import com.pdm.rankeuca.data.local.relations.QuestionWithOptions
 import kotlinx.coroutines.flow.Flow
@@ -22,4 +23,7 @@ interface QuestionDao {
 
     @Delete
     suspend fun deleteQuestion(question: QuestionEntity)
+
+    @Update
+    suspend fun updateQuestion(question: QuestionEntity)
 }

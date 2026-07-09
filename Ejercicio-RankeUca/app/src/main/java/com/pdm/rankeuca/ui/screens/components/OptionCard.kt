@@ -34,14 +34,14 @@ fun OptionCard(
         Row() {
             AsyncImage(
                 model = option.imageUrl,
-                contentDescription = option.name,
+                contentDescription = option.value,
                 modifier = Modifier
                     .size(90.dp)
                     .clip(RoundedCornerShape(8.dp)),
                 contentScale = ContentScale.Crop
             )
             Column() {
-                Text(text = option.name)
+                Text(text = option.value)
                 if(isVoteScreen) {
                     Text(text = option.votes.toString())
                 }

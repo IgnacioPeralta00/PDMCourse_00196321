@@ -39,6 +39,12 @@ class OptionsViewModel(
         }
     }
 
+    fun updateOption(option: Option) {
+        viewModelScope.launch {
+            optionRepository.updateOption(option)
+        }
+    }
+
     companion object {
         fun provideFactory(questionId: Int) = viewModelFactory {
             initializer {

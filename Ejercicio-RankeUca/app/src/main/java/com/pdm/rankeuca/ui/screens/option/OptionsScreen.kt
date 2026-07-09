@@ -3,6 +3,7 @@ package com.pdm.rankeuca.ui.screens.option
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -14,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.DeleteOutline
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Inbox
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -36,7 +38,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.pdmcourse2026.RankeUca.ui.screens.components.BottomSheet
+import com.pdm.rankeuca.domain.models.Option
+import com.pdm.rankeuca.ui.screens.components.BottomSheet
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,11 +49,12 @@ fun OptionsScreen(
     onBackClick: () -> Unit,
     viewModel: OptionsViewModel = viewModel(
         key = questionId.toString(),
-        factory = OptionsViewModel.Companion.provideFactory(questionId)
+        factory = OptionsViewModel.provideFactory(questionId)
     )
 ) {
     val options by viewModel.options.collectAsStateWithLifecycle()
     var showSheet by rememberSaveable { mutableStateOf(false) }
+    var optionSelected by rememberSaveable { mutableStateOf<Option?>(null) }
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
@@ -120,24 +124,33 @@ fun OptionsScreen(
                             ListItem(
                                 headlineContent = {
                                     Text(
-                                        text = option.name,
+                                        text = option.value,
                                         style = MaterialTheme.typography.titleMedium
                                     )
                                 },
                                 supportingContent = {
                                     Text(
-                                        text = option.imageUrl,
+                                        text = option.imageUrl ?: "",
                                         style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                 },
                                 trailingContent = {
-                                    IconButton(onClick = { viewModel.deleteOption(option) }) {
-                                        Icon(
-                                            imageVector = Icons.Default.DeleteOutline,
-                                            contentDescription = "Borrar ${option.name}",
-                                            tint = MaterialTheme.colorScheme.error
-                                        )
+                                    Row {
+                                        IconButton(onClick = { showSheet = true ; optionSelected = option  }) {
+                                            Icon(
+                                                imageVector = Icons.Default.Edit,
+                                                contentDescription = "Ver detalle de ${option.value}",
+                                                tint = MaterialTheme.colorScheme.primary
+                                            )
+                                        }
+                                        IconButton(onClick = { viewModel.deleteOption(option) }) {
+                                            Icon(
+                                                imageVector = Icons.Default.DeleteOutline,
+                                                contentDescription = "Borrar ${option.value}",
+                                                tint = MaterialTheme.colorScheme.error
+                                            )
+                                        }
                                     }
                                 }
                             )
@@ -151,11 +164,20 @@ fun OptionsScreen(
     if (showSheet) {
         BottomSheet(
             onSaveForOption = { name, imageUrl ->
-                viewModel.addOption(name, imageUrl)
+                if (optionSelected == null) {
+                    viewModel.addOption(name, imageUrl)
+                } else {
+                    viewModel.updateOption(optionSelected!!.copy(value = name, imageUrl = imageUrl))
+                }
                 showSheet = false
+                optionSelected = null
             },
-            onDismiss = { showSheet = false },
-            onSaveForQuestion = { _, -> },
+            onDismiss = {
+                showSheet = false
+                optionSelected = null
+            },
+            onSaveForQuestion = { _ -> },
+            option = optionSelected,
         )
     }
 }

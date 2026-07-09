@@ -1,4 +1,4 @@
-package com.pdmcourse2026.RankeUca.ui.screens.components
+package com.pdm.rankeuca.ui.screens.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,6 +24,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.pdm.rankeuca.domain.models.Option
+import com.pdm.rankeuca.domain.models.Question
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,22 +33,24 @@ fun BottomSheet(
     onSaveForOption: (name: String, imageUrl: String) -> Unit,
     onSaveForQuestion: (title: String) -> Unit,
     isOption: Boolean = true,
+    option: Option? = null,
+    question: Question? = null,
     onDismiss: () -> Unit
 ) {
     if (isOption) {
-        var name by rememberSaveable { mutableStateOf("") }
-        var imageUrl by rememberSaveable { mutableStateOf("") }
+        var value by rememberSaveable { mutableStateOf(option?.value ?: "") }
+        var imageUrl by rememberSaveable { mutableStateOf(option?.imageUrl ?: "") }
 
         BaseBottomSheet(
-            title = "Nueva opción",
-            subtitle = "Agrega nombre e imagen para la lista.",
+            title = if (option != null) "Editar opción" else "Nueva opción",
+            subtitle = if (option != null) "Edita los datos de la opción." else "Agrega los datos de la nueva opción.",
             onDismiss = onDismiss,
-            onSave = { onSaveForOption(name.trim(), imageUrl.trim()) },
-            saveEnabled = name.isNotBlank() && imageUrl.isNotBlank()
+            onSave = { onSaveForOption(value.trim(), imageUrl.trim()) },
+            saveEnabled = value.isNotBlank()
         ) {
             OutlinedTextField(
-                value = name,
-                onValueChange = { name = it },
+                value = value,
+                onValueChange = { value = it },
                 label = { Text("Nombre") },
                 modifier = Modifier.fillMaxWidth())
             OutlinedTextField(
@@ -56,11 +60,11 @@ fun BottomSheet(
                 modifier = Modifier.fillMaxWidth())
         }
     } else {
-        var title by rememberSaveable { mutableStateOf("") }
+        var title by rememberSaveable { mutableStateOf(question?.title ?: "") }
 
         BaseBottomSheet(
-            title = "Nueva Pregunta",
-            subtitle = "Agrega el título de la pregunta.",
+            title = if (question != null) "Editar pregunta" else "Nueva pregunta",
+            subtitle = if (question != null) "Edita los datos de la pregunta." else "Agrega los datos de la nueva pregunta.",
             onDismiss = onDismiss,
             onSave = { onSaveForQuestion(title.trim()) },
             saveEnabled = title.isNotBlank()

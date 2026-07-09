@@ -12,7 +12,7 @@ import com.pdm.rankeuca.data.local.entities.QuestionEntity
 
 @Database(
     entities = [QuestionEntity::class, OptionEntity::class],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class RankeUcaDatabase : RoomDatabase() {
