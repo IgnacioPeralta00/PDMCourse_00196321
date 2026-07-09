@@ -27,9 +27,14 @@ fun Navigator() {
 
             entry<Routes.Questionary> {
                 QuestionaryScreen(
-                    onBackClick = { backStack.removeLastOrNull() }
+                    onBackClick = { backStack.removeLastOrNull() },
+                    onVoteSuccess = { mapaDeVotos ->
+                        backStack.removeLastOrNull()
+                        backStack.add(Routes.Results(userVotes = mapaDeVotos))
+                    }
                 )
             }
+
             entry<Routes.Results> { key ->
                 ResultsScreen(
                     userVotes = key.userVotes,

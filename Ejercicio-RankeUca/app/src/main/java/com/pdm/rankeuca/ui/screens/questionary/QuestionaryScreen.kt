@@ -19,7 +19,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 @Composable
 fun QuestionaryScreen(
     viewModel: QuestionaryViewModel = viewModel(factory = QuestionaryViewModel.Factory),
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onVoteSuccess: (Map<Int, Int>) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val selectedVotes by viewModel.selectedVotes.collectAsStateWithLifecycle()
@@ -38,7 +39,11 @@ fun QuestionaryScreen(
         bottomBar = {
             if (selectedVotes.isNotEmpty()) {
                 Button(
-                    onClick = { viewModel.submitVotes() },
+                    onClick = {
+                        val votesToPass = selectedVotes
+                        viewModel.submitVotes()
+                        onVoteSuccess(votesToPass)
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp)
